@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import App from "../../components/App";
 
 const NewUser: React.FC = () => {
@@ -9,8 +9,11 @@ const NewUser: React.FC = () => {
   const [password, setPassword] = useState("");
   const [note, setNote] = useState("");
   const addNewPremiumUser = async () => {
-    await createUserWithEmailAndPassword(getAuth(), email, password);
-    await addDoc(collection(getFirestore(), "premiumUsers"), { lcName: name.toLowerCase(), name, note });
+    const credential = await createUserWithEmailAndPassword(getAuth(), email, password);
+    const uid = credential.user.uid;
+    const colRef = collection(getFirestore(), "premiumUsers");
+    const docRef = doc(colRef, uid);
+    await setDoc(docRef, { lcName: name.toLowerCase(), name, note });
     window.alert("成功");
   };
   return (
@@ -19,7 +22,9 @@ const NewUser: React.FC = () => {
       <input value={email} onInput={(e) => setEmail(e.currentTarget.value)} />
       PASSWORD
       <input type="password" value={password} onInput={(e) => setPassword(e.currentTarget.value)} />
+      NAME
       <input onInput={(e) => setName(e.currentTarget.value)} />
+      NOTE
       <input onInput={(e) => setNote(e.currentTarget.value)} />
       <button onClick={() => addNewPremiumUser()}>登録</button>
     </App>
