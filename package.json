@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@types/stripe": "^8.0.417",
+    "crypto": "^1.0.1",
     "firebase": "^9.6.5",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.13.1",
