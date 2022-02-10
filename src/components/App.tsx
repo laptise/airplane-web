@@ -1,11 +1,26 @@
+import Link from "next/link";
 import React from "react";
 import Header from "./Header";
 
-const App = ({ children }) => (
-  <main>
+interface AppProp {
+  children: JSX.Element;
+  bodyId: string;
+  title: string;
+}
+
+const App: React.FC<AppProp> = ({ children, bodyId }) => (
+  <>
     <Header pathname={"test"} />
-    {children}
-  </main>
+    <main id={bodyId}>{children}</main>
+    <footer>
+      <h4>Airplane</h4>
+      <nav>
+        <Link href="/premium">
+          <a>認定ユーザー</a>
+        </Link>
+      </nav>
+    </footer>
+  </>
 );
 
 export default App;

@@ -17,16 +17,18 @@ const NewUser: React.FC = () => {
     window.alert("成功");
   };
   return (
-    <App>
-      EMAIL
-      <input value={email} onInput={(e) => setEmail(e.currentTarget.value)} />
-      PASSWORD
-      <input type="password" value={password} onInput={(e) => setPassword(e.currentTarget.value)} />
-      NAME
-      <input onInput={(e) => setName(e.currentTarget.value)} />
-      NOTE
-      <input onInput={(e) => setNote(e.currentTarget.value)} />
-      <button onClick={() => addNewPremiumUser()}>登録</button>
+    <App title="newUser" bodyId="newUser">
+      <>
+        EMAIL
+        <input value={email} onInput={(e) => setEmail(e.currentTarget.value)} />
+        PASSWORD
+        <input type="password" value={password} onInput={(e) => setPassword(e.currentTarget.value)} />
+        NAME
+        <input onInput={(e) => setName(e.currentTarget.value)} />
+        NOTE
+        <input onInput={(e) => setNote(e.currentTarget.value)} />
+        <button onClick={() => addNewPremiumUser()}>登録</button>
+      </>
     </App>
   );
 };

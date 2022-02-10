@@ -1,4 +1,166 @@
-header {
-  display: flex;
-  gap: 10px;
+// /* Color Theme Swatches in RGBA */
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-1-rgba { color: rgba(204, 112, 216, 1); }
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-2-rgba { color: rgba(242, 199, 72, 1); }
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-3-rgba { color: rgba(242, 180, 65, 1); }
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-4-rgba { color: rgba(63, 31, 3, 1); }
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-5-rgba { color: rgba(216, 163, 132, 1); }
+
+// /* Color Theme Swatches in HSLA */
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-1-hsla { color: hsla(292, 57, 64, 1); }
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-2-hsla { color: hsla(45, 86, 61, 1); }
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-3-hsla { color: hsla(39, 87, 60, 1); }
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-4-hsla { color: hsla(28, 88, 13, 1); }
+// .BTS-concept-with-headphones-and-music-discs-on-a-yellow-background.-5-hsla { color: hsla(22, 52, 68, 1); }
+@import "colors";
+body {
+  font-family: source-han-sans-japanese, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+  a {
+    text-decoration: none;
+    color: initial;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    h1 {
+      cursor: pointer;
+      margin: 0;
+      font-size: 18px;
+      margin-right: 40px;
+    }
+    display: flex;
+    align-items: center;
+
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+    padding: 10px;
+    background-color: $cyellow;
+    .topLoginButton {
+      margin-left: auto;
+    }
+    button {
+      margin-left: auto;
+    }
+  }
+  main {
+    &#home {
+      section {
+        padding: 20px;
+        &#top {
+          flex-direction: column;
+          display: flex;
+          align-items: center;
+          .titleZone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+          }
+          h1 {
+            margin: 10px;
+            font-size: 36px;
+          }
+          p {
+            font-size: 16px;
+          }
+        }
+
+        &#whosInAirplane {
+          .slider {
+            display: flex;
+            overflow-x: hidden;
+            .slide {
+              min-width: 200px;
+            }
+          }
+        }
+        &#quickStart {
+          .selection {
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            .way {
+              flex: 1;
+              border: 1px solid #ccc;
+              padding: 20px;
+              border-radius: 10px;
+              h3 {
+                text-align: center;
+              }
+              p {
+                font-size: 14px;
+              }
+              .contextZone {
+                display: flex;
+                flex-direction: column;
+              }
+            }
+          }
+        }
+      }
+    }
+    &#premium {
+      section {
+        padding: 20px;
+        &#aboutAirplane {
+        }
+        &#useCase {
+          .cases {
+            .case {
+            }
+          }
+        }
+        &#features {
+          .featureList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            li {
+              width: 30%;
+              list-style: none;
+            }
+          }
+        }
+        &#services {
+          display: flex;
+          flex-direction: column;
+          .course {
+          }
+        }
+      }
+    }
+  }
+  footer {
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    * {
+      color: $cdark;
+    }
+    nav {
+      display: flex;
+      a {
+        font-size: 13px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }
