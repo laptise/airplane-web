@@ -1,5 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import Link from "next/link";
+import KeyIcon from "@mui/icons-material/Key";
 import { FormEvent, useState } from "react";
 import App from "../components/App";
 
@@ -36,7 +37,10 @@ function QuickStart() {
       <h2>Airplaneを始める</h2>
       <div className="selection">
         <div className="way">
-          <h3>招待コードからスタート</h3>
+          <h3>
+            <KeyIcon />
+            招待コードからスタート
+          </h3>
           <p>
             認定ユーザーから受け取った招待コードから利用を開始します。
             <br />
