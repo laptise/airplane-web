@@ -7,10 +7,16 @@ interface FlatParams {
   [key: string]: string;
 }
 const handler: NextApiHandler = async (req, res) => {
-  const { email, password, name, note } = req.body as FlatParams;
+  if (req.method === "GET") {
+    res.status(500).end();
+    return;
+  }
+  const { email, password, name, note } = JSON.parse(req.body) as FlatParams;
   if (!email || !password) {
     res.status(500).end();
+    return;
   }
+
   const user = await ServerInstance.firebase.auth().createUser({
     email: email,
     emailVerified: false,
@@ -36,6 +42,7 @@ const handler: NextApiHandler = async (req, res) => {
     note,
   });
   res.status(200).send(hashed);
+  return;
 };
 
 export default handler;

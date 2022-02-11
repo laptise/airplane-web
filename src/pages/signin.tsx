@@ -81,8 +81,9 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
 
   const submit = async () => {
     setIsLoaoding(true);
-    await new Promise((res) => {
-      setTimeout(res, 1000);
+    await fetch("/api/v3/customer/new", {
+      method: "POST",
+      body: JSON.stringify({ email, password, name, note: "" }),
     });
     setIsLoaoding(false);
     setStep(step + 1);
@@ -157,7 +158,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
         <Button variant="outlined" onClick={() => setStep(step - 1)}>
           前へ
         </Button>
-        <LoadingButton loading={isLoading} disabled={!fulfilled} variant="outlined" onClick={submit}>
+        <LoadingButton loading={isLoading} disabled={!fulfilled} variant="outlined" onClick={() => submit()}>
           完了
         </LoadingButton>
       </div>
