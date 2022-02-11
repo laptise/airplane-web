@@ -1,18 +1,29 @@
+import Link from "next/link";
 import App from "../../components/App";
 
 export default function PremiumUser() {
   return (
     <App title="公式" bodyId="premium">
       <>
+        <Welcome />
         <AboutAirplane />
         <UseCase />
         <FeatureAirplane />
         <AirplaneService />
+        <GetStarted />
       </>
     </App>
   );
 }
-
+function Welcome() {
+  return (
+    <section id="welcome">
+      <small>Welcome</small>
+      <h2>認定ユーザーになりましょう</h2>
+      <p>Airplaneでは認定ユーザーを随時募集しています!今すぐ登録して始めましょう。</p>
+    </section>
+  );
+}
 function AboutAirplane() {
   return (
     <section id="aboutAirplane">
@@ -101,6 +112,7 @@ function Feature() {
 function AirplaneService() {
   return (
     <section id="services">
+      <small>Plans</small>
       <h2>多種多様なプラン</h2>
       <Course />
     </section>
@@ -110,9 +122,25 @@ function AirplaneService() {
 function Course() {
   return (
     <div className="course">
-      <small>Shuttle</small>
       <h3>シャトル</h3>
       <p>プレミアムユーザーと1:1メッセージを受け渡しするプラン</p>
     </div>
+  );
+}
+
+function GetStarted() {
+  return (
+    <section id="getStarted">
+      <small>Get started!</small>
+      <h2>準備はよろしいですか？注意事項を読み、始めましょう。</h2>
+      <p>
+        Airplaneではコミュニケーションや特別な情報発信を取ることをサービスとして提供するプラットフォームです。
+        <br />
+        顧客はこのサービスを提供してもらうために対価を支払います。既存の他アプリのメッセージと同じように、放置して終わるのではなく、発信というものがサービスになっていることを改めて意識しましょう。
+      </p>
+      <Link href="/premium/getStarted">
+        <a>登録ページへ</a>
+      </Link>
+    </section>
   );
 }

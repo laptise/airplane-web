@@ -14,9 +14,10 @@ const LoginButton: React.FC = () => {
   );
 };
 
-const Header = ({ pathname }) => (
+const Header = ({ pathname, title }) => (
   <>
     <Head>
+      <title>{title} - Airplane</title>
       <script
         dangerouslySetInnerHTML={{
           __html: `

@@ -1,3 +1,5 @@
+import { TextField } from "@mui/material";
+import Link from "next/link";
 import { useState } from "react";
 import App from "../components/App";
 
@@ -40,7 +42,7 @@ function QuickStart() {
             <br />
           </p>
           <div className="contextZone">
-            <small>コードを入力してください。</small>
+            <TextField id="outlined-basic" label="コードを入力してください" variant="outlined" />
             <input value={code} onInput={(e) => setCode(e.currentTarget.value)} />
           </div>
         </div>
@@ -48,7 +50,9 @@ function QuickStart() {
           <h3>会員登録からスタート</h3>
           <p>招待コードがなくても、公開プランは検索から探すことができます。</p>
           <div className="contextZone">
-            <button>会員登録ページへ</button>
+            <Link href="/signin">
+              <a>会員登録ページへ</a>
+            </Link>
           </div>
         </div>
       </div>

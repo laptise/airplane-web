@@ -21,6 +21,13 @@ body {
   a {
     text-decoration: none;
     color: initial;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  p {
+    font-size: 1em;
   }
   h1,
   h2,
@@ -128,9 +135,14 @@ body {
           .featureList {
             display: flex;
             flex-wrap: wrap;
+            padding: 0;
             gap: 20px;
             li {
-              width: 30%;
+              @media only screen and (max-width: 480px) {
+                min-width: 90%;
+              }
+              flex: 1;
+              min-width: 30%;
               list-style: none;
             }
           }
@@ -155,8 +167,10 @@ body {
     }
     nav {
       display: flex;
+      gap: 10px;
       a {
         font-size: 13px;
+        cursor: pointer;
         &:hover {
           text-decoration: underline;
         }
