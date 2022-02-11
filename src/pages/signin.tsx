@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import App from "../components/App";
 import { Handler } from "../components/EventHandlers";
+import jaLocale from "date-fns/locale/ja";
 import app from "../firebase";
 
 enum SigninStep {
@@ -89,7 +90,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
 
   useEffect(checkPassword, [password, cPassword]);
   useEffect(checkFulfilled, [passwordHasError, birth, email, name, sei, mei]);
-
+  const dateAdapter = DateAdapter;
   return (
     <StepContent currentStep={step} step={SigninStep.BasicInfo}>
       <div className="basicForm">
@@ -142,7 +143,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
           <TextField onChange={(e) => Handler.Input(e, setSei)} value={sei} size="small" label="姓" variant="outlined" style={{ flex: 1 }} />
           <TextField onChange={(e) => Handler.Input(e, setMei)} value={mei} size="small" label="名" variant="outlined" style={{ flex: 1 }} />
         </div>
-        <LocalizationProvider dateAdapter={DateAdapter}>
+        <LocalizationProvider dateAdapter={DateAdapter} locale={jaLocale}>
           <MobileDatePicker
             label="生年月日"
             inputFormat="yyyy年 M月 d日"
