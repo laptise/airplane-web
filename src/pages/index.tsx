@@ -41,7 +41,7 @@ function QuickStart() {
             認定ユーザーから受け取った招待コードから利用を開始します。
             <br />
           </p>
-          <div className="contextZone">
+          <div className="contextZone" style={{ gap: 20 }}>
             <TextField
               size="small"
               value={code}
@@ -49,6 +49,9 @@ function QuickStart() {
               label="コードを入力してください"
               variant="outlined"
             />
+            <Button disabled={!code} variant="outlined">
+              コードからスタート
+            </Button>
           </div>
         </div>
         <div className="way">
