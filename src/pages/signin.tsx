@@ -2,7 +2,8 @@ import { CheckBox, TextFieldsOutlined } from "@mui/icons-material";
 import { LoadingButton, LocalizationProvider, MobileDatePicker } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import App from "../components/App";
 import { Handler } from "../components/EventHandlers";
 import app from "../firebase";
@@ -13,6 +14,16 @@ enum SigninStep {
   Done,
 }
 
+interface SubmitContent {
+  password: string;
+  cPassword: string;
+  name: string;
+  sei: string;
+  mei: string;
+  birth: Date;
+}
+
+const SigninContext = createContext<SubmitContent>(null);
 const Step: React.FC<{ keyStep: SigninStep; currentStep: SigninStep }> = ({ children, keyStep, currentStep }) => (
   <li data-activated={currentStep == keyStep}>{children}</li>
 );
@@ -55,6 +66,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
   const [fulfilled, setFulfilled] = useState(false);
   const [sei, setSei] = useState("");
   const [mei, setMei] = useState("");
+  const [isLoading, setIsLoaoding] = useState(false);
   const checkPassword = () => {
     if (password && password !== cPassword) setPasswordHasError(true);
     else {
@@ -64,6 +76,15 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
   const checkFulfilled = () => {
     if (!passwordHasError && birth && email && sei && mei && name) setFulfilled(true);
     else setFulfilled(false);
+  };
+
+  const submit = async () => {
+    setIsLoaoding(true);
+    await new Promise((res) => {
+      setTimeout(res, 1000);
+    });
+    setIsLoaoding(false);
+    setStep(step + 1);
   };
 
   useEffect(checkPassword, [password, cPassword]);
@@ -135,7 +156,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
         <Button variant="outlined" onClick={() => setStep(step - 1)}>
           前へ
         </Button>
-        <LoadingButton disabled={!fulfilled} variant="outlined" onClick={() => setStep(step + 1)}>
+        <LoadingButton loading={isLoading} disabled={!fulfilled} variant="outlined" onClick={submit}>
           完了
         </LoadingButton>
       </div>
@@ -146,13 +167,15 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
 const Done: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) => {
   const [step, setStep] = stepState;
   return (
-    <StepContent currentStep={step} step={SigninStep.Agreement}>
+    <StepContent currentStep={step} step={SigninStep.Done}>
       <h3>完了</h3>
       <small>
         会員登録は以上となります。サービスの利用にはチケットが必要になります。チケット購入のために必要な支払い手段はログイン後設定をしてください。
       </small>
       <div className="buttons">
-        <Button variant="outlined">完了</Button>
+        <Link href={"/login"}>
+          <Button variant="outlined">完了</Button>
+        </Link>
       </div>
     </StepContent>
   );
@@ -168,10 +191,9 @@ export default function Signin() {
       }
     });
   }, []);
-  const submitBasic = async () => {};
   return (
     <App bodyId="signin" title="会員登録">
-      <>
+      <SigninContext.Provider value={{ password: "", cPassword: "", name: "", sei: "", mei: "", birth: null }}>
         <ol className="steps">
           <Step currentStep={step} keyStep={SigninStep.Agreement}>
             1. 利用規約同意
@@ -198,7 +220,7 @@ export default function Signin() {
             </StepContent>
           </div>
         </div>
-      </>
+      </SigninContext.Provider>
     </App>
   );
 }
