@@ -1,6 +1,6 @@
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import Link from "next/link";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import App from "../components/App";
 
 export default function Home() {
@@ -42,8 +42,21 @@ function QuickStart() {
             <br />
           </p>
           <div className="contextZone">
-            <TextField id="outlined-basic" label="コードを入力してください" variant="outlined" />
-            <input value={code} onInput={(e) => setCode(e.currentTarget.value)} />
+            <Box
+              component="form"
+              sx={{
+                "& > :not(style)": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                value={code}
+                onInput={(e: FormEvent<HTMLInputElement>) => setCode(e.currentTarget.value)}
+                label="コードを入力してください"
+                variant="outlined"
+              />
+            </Box>
           </div>
         </div>
         <div className="way">

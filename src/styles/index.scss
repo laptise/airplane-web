@@ -155,6 +155,69 @@ body {
         }
       }
     }
+    &#signin {
+      ol.steps {
+        padding: 0;
+        position: relative;
+        &::after {
+          z-index: -1;
+          position: absolute;
+          width: 100%;
+          top: 50%;
+          height: 1px;
+          background-color: #ccc;
+          content: "";
+        }
+        width: 100%;
+        justify-content: space-between;
+        display: flex;
+        gap: 20px;
+        li {
+          padding: 0 10px;
+          list-style-type: none;
+          background-color: white;
+          &[data-activated="true"] {
+            color: rgba(0, 0, 0, 1);
+          }
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.2);
+        }
+      }
+      .stepMask {
+        overflow: hidden;
+        .stepContents {
+          transition: left 300ms ease-out;
+          position: relative;
+          display: flex;
+          section.singleStep {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 100vw;
+            padding: 20px;
+            .buttons {
+              display: flex;
+              justify-content: space-around;
+            }
+            &[data-step="0"] {
+              textarea {
+                resize: none;
+                padding: 5px;
+              }
+            }
+            &[data-step="1"] {
+              .basicForm {
+                padding: 20px 0;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
   footer {
     border-top: 1px solid #ccc;
@@ -169,6 +232,7 @@ body {
       display: flex;
       gap: 10px;
       a {
+        font-weight: 300;
         font-size: 13px;
         cursor: pointer;
         &:hover {
