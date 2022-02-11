@@ -32,6 +32,7 @@ function AboutAirplane() {
 function QuickStart() {
   const [mode, setMode] = useState(0);
   const [code, setCode] = useState("");
+  const test = () => {};
   return (
     <section id="quickStart">
       <h2>Airplaneを始める</h2>

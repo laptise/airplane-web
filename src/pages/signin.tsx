@@ -1,5 +1,5 @@
 import { CheckBox, TextFieldsOutlined } from "@mui/icons-material";
-import { LocalizationProvider, MobileDatePicker } from "@mui/lab";
+import { LoadingButton, LocalizationProvider, MobileDatePicker } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -17,8 +17,8 @@ const Step: React.FC<{ keyStep: SigninStep; currentStep: SigninStep }> = ({ chil
   <li data-activated={currentStep == keyStep}>{children}</li>
 );
 
-const StepContent: React.FC<{ step: SigninStep }> = ({ children, step }) => (
-  <section className="singleStep" data-step={step}>
+const StepContent: React.FC<{ currentStep: SigninStep; step: SigninStep }> = ({ children, step, currentStep }) => (
+  <section className="singleStep" data-step={step} data-disabled={currentStep !== step}>
     {children}
   </section>
 );
@@ -27,13 +27,15 @@ const Agreements: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) =
   const [step, setStep] = stepState;
   const [agreed, setAgreed] = useState(false);
   return (
-    <StepContent step={SigninStep.Agreement}>
+    <StepContent currentStep={step} step={SigninStep.Agreement}>
       <h3>利用規約</h3>
       <small>以下を読み、同意の上、次に進んでください</small>
-      <textarea readOnly={true}>Airplaneはメッセージングを商品とするサービスです。</textarea>
+      <textarea tabIndex={-1} readOnly={true}>
+        Airplaneはメッセージングを商品とするサービスです。
+      </textarea>
       <FormControlLabel control={<Checkbox onChange={(e) => setAgreed(e.currentTarget.checked)} />} label="同意します" />
       <div className="buttons">
-        <Button disabled={!agreed} onClick={() => setStep(step + 1)} variant="outlined">
+        <Button tabIndex={-1} disabled={!agreed} onClick={() => setStep(step + 1)} variant="outlined">
           次へ
         </Button>
       </div>
@@ -41,6 +43,7 @@ const Agreements: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) =
   );
 };
 
+/**基本情報タブ */
 const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) => {
   const [step, setStep] = stepState;
   const [birth, setBirth] = useState(null);
@@ -62,11 +65,12 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
     if (!passwordHasError && birth && email && sei && mei && name) setFulfilled(true);
     else setFulfilled(false);
   };
+
   useEffect(checkPassword, [password, cPassword]);
   useEffect(checkFulfilled, [passwordHasError, birth, email, name, sei, mei]);
 
   return (
-    <StepContent step={SigninStep.BasicInfo}>
+    <StepContent currentStep={step} step={SigninStep.BasicInfo}>
       <div className="basicForm">
         <h4>ログイン情報</h4>
         <TextField
@@ -131,29 +135,40 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
         <Button variant="outlined" onClick={() => setStep(step - 1)}>
           前へ
         </Button>
-        <Button disabled={!fulfilled} variant="outlined" onClick={() => setStep(step + 1)}>
-          次へ
-        </Button>
+        <LoadingButton disabled={!fulfilled} variant="outlined" onClick={() => setStep(step + 1)}>
+          完了
+        </LoadingButton>
       </div>
     </StepContent>
   );
 };
 
-const Done: React.FC = () => (
-  <StepContent step={SigninStep.Agreement}>
-    <h3>完了</h3>
-    <small>
-      会員登録は以上となります。サービスの利用にはチケットが必要になります。チケット購入のために必要な支払い手段はログイン後設定をしてください。
-    </small>
-    <div className="buttons">
-      <Button variant="outlined">完了</Button>
-    </div>
-  </StepContent>
-);
+const Done: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) => {
+  const [step, setStep] = stepState;
+  return (
+    <StepContent currentStep={step} step={SigninStep.Agreement}>
+      <h3>完了</h3>
+      <small>
+        会員登録は以上となります。サービスの利用にはチケットが必要になります。チケット購入のために必要な支払い手段はログイン後設定をしてください。
+      </small>
+      <div className="buttons">
+        <Button variant="outlined">完了</Button>
+      </div>
+    </StepContent>
+  );
+};
 
 export default function Signin() {
   const stepState = useState(SigninStep.Agreement);
   const [step, setStep] = stepState;
+  useEffect(() => {
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Tab") {
+        event.preventDefault();
+      }
+    });
+  }, []);
+  const submitBasic = async () => {};
   return (
     <App bodyId="signin" title="会員登録">
       <>
@@ -172,8 +187,8 @@ export default function Signin() {
           <div className="stepContents" style={{ left: 0 - step * 100 + "vw" }}>
             <Agreements stepState={stepState} />
             <BasicInfoSection stepState={stepState} />
-            <Done />
-            <StepContent step={SigninStep.Done}>
+            <Done stepState={stepState} />
+            <StepContent currentStep={step} step={SigninStep.Done}>
               おddれ
               <div className="buttons">
                 <Button variant="outlined" onClick={() => setStep(step - 1)}>

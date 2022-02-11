@@ -198,6 +198,10 @@ body {
           position: relative;
           display: flex;
           section.singleStep {
+            &[data-disabled="true"] {
+              user-select: none;
+              pointer-events: none;
+            }
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
