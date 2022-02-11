@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import Link from "next/link";
 import App from "../../components/App";
 
@@ -139,7 +140,7 @@ function GetStarted() {
         顧客はこのサービスを提供してもらうために対価を支払います。既存の他アプリのメッセージと同じように、放置して終わるのではなく、発信というものがサービスになっていることを改めて意識しましょう。
       </p>
       <Link href="/premium/getStarted">
-        <a>登録ページへ</a>
+        <Button variant="outlined">登録ページへ</Button>
       </Link>
     </section>
   );

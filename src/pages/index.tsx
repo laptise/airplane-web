@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import App from "../components/App";
@@ -42,21 +42,13 @@ function QuickStart() {
             <br />
           </p>
           <div className="contextZone">
-            <Box
-              component="form"
-              sx={{
-                "& > :not(style)": { m: 1, width: "25ch" },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                value={code}
-                onInput={(e: FormEvent<HTMLInputElement>) => setCode(e.currentTarget.value)}
-                label="コードを入力してください"
-                variant="outlined"
-              />
-            </Box>
+            <TextField
+              size="small"
+              value={code}
+              onChange={(e) => setCode(e.currentTarget.value)}
+              label="コードを入力してください"
+              variant="outlined"
+            />
           </div>
         </div>
         <div className="way">
@@ -64,7 +56,7 @@ function QuickStart() {
           <p>招待コードがなくても、公開プランは検索から探すことができます。</p>
           <div className="contextZone">
             <Link href="/signin">
-              <a>会員登録ページへ</a>
+              <Button variant="outlined">会員登録ページへ</Button>
             </Link>
           </div>
         </div>
