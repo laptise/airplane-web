@@ -12,8 +12,9 @@ export default function Login() {
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     console.log("start");
     e.preventDefault();
-    const auth = getAuth(getFirebase());
+    const auth = getAuth();
     const sign = await signInWithEmailAndPassword(auth, email, pw);
+    console.log(sign);
   };
   return (
     <App bodyId="login" title="ログイン">
