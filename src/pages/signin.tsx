@@ -43,9 +43,7 @@ const Agreements: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) =
     <StepContent currentStep={step} step={SigninStep.Agreement}>
       <h3>利用規約</h3>
       <small>以下を読み、同意の上、次に進んでください</small>
-      <textarea tabIndex={-1} readOnly={true}>
-        Airplaneはメッセージングを商品とするサービスです。
-      </textarea>
+      <p className="textContent">Airplaneはメッセージングを商品とするサービスです。</p>
       <FormControlLabel control={<Checkbox onChange={(e) => setAgreed(e.currentTarget.checked)} />} label="同意します" />
       <div className="buttons">
         <Button tabIndex={-1} disabled={!agreed} onClick={() => setStep(step + 1)} variant="outlined">
@@ -164,7 +162,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
         </LocalizationProvider>
       </div>
       <div className="buttons">
-        <Button variant="outlined" onClick={() => setStep(step - 1)}>
+        <Button variant="outlined" disabled={isLoading} onClick={() => setStep(step - 1)}>
           前へ
         </Button>
         <LoadingButton loading={isLoading} disabled={!fulfilled} variant="outlined" onClick={() => submit()}>
