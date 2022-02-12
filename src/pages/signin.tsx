@@ -83,7 +83,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
     setIsLoaoding(true);
     await fetch("/api/v3/customer/new", {
       method: "POST",
-      body: JSON.stringify({ email, password, name, note: "" }),
+      body: JSON.stringify({ email, password, name, sei, mei, birth }),
     });
     setIsLoaoding(false);
     setStep(step + 1);

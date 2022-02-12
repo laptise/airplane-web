@@ -11,7 +11,7 @@ const handler: NextApiHandler = async (req, res) => {
     res.status(500).end();
     return;
   }
-  const { email, password, name, note } = JSON.parse(req.body) as FlatParams;
+  const { email, password, name, mei, sei, birth } = JSON.parse(req.body) as FlatParams;
   if (!email || !password) {
     res.status(500).end();
     return;
@@ -37,10 +37,14 @@ const handler: NextApiHandler = async (req, res) => {
     isPremium: false,
     createdAt: new Date(),
     updatedAt: new Date(),
+    birth,
+    mei,
+    sei,
     name,
     lcName: name.toLowerCase(),
-    note,
+    note: "",
   });
+
   res.status(200).send(hashed);
   return;
 };
