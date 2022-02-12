@@ -1,13 +1,11 @@
-import { CheckBox, TextFieldsOutlined } from "@mui/icons-material";
 import { LoadingButton, LocalizationProvider, MobileDatePicker } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import { Button, Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
 import Link from "next/link";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, FormEvent, useEffect, useState } from "react";
 import App from "../components/App";
 import { Handler } from "../components/EventHandlers";
 import jaLocale from "date-fns/locale/ja";
-import app from "../firebase";
 import axios from "axios";
 
 enum SigninStep {
@@ -79,8 +77,10 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
     else setFulfilled(false);
   };
 
-  const submit = async () => {
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
     setIsLoaoding(true);
+    console.log("running");
     await axios
       .post("/api/v3/customer/new", { email, password, name, sei, mei, birth })
       .then(() => {
@@ -97,78 +97,80 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
   const dateAdapter = DateAdapter;
   return (
     <StepContent currentStep={step} step={SigninStep.BasicInfo}>
-      <div className="basicForm">
-        <h4>ログイン情報</h4>
-        <TextField
-          value={email}
-          onChange={(e) => setEmail(e.currentTarget.value)}
-          type={"email"}
-          size="small"
-          label="メールアドレス"
-          variant="outlined"
-        />
-        <Stack spacing={1}>
-          <small>パスワードは最低6文字以上必要です。</small>
+      <form onSubmit={submit}>
+        <div className="basicForm">
+          <h4>ログイン情報</h4>
+          <TextField
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+            type={"email"}
+            size="small"
+            label="メールアドレス"
+            variant="outlined"
+          />
+          <Stack spacing={1}>
+            <small>パスワードは最低6文字以上必要です。</small>
+            <div style={{ display: "flex", gap: 20 }}>
+              <TextField
+                value={password}
+                onChange={(e) => {
+                  Handler.Input(e, setPassword);
+                }}
+                error={passwordHasError}
+                type={"password"}
+                size="small"
+                label="パスワード"
+                variant="outlined"
+                style={{ flex: 1 }}
+              />
+              <TextField
+                value={cPassword}
+                error={passwordHasError}
+                onChange={(e) => {
+                  Handler.Input(e, setCPassword);
+                }}
+                type={"password"}
+                size="small"
+                label="パスワード確認"
+                variant="outlined"
+                style={{ flex: 1 }}
+              />
+            </div>
+          </Stack>
+        </div>
+        <div className="basicForm">
+          <h4>個人情報</h4>
           <div style={{ display: "flex", gap: 20 }}>
             <TextField
-              value={password}
-              onChange={(e) => {
-                Handler.Input(e, setPassword);
-              }}
-              error={passwordHasError}
-              type={"password"}
+              onChange={(e) => Handler.Input(e, setName)}
+              value={name}
               size="small"
-              label="パスワード"
+              label="ニックネーム"
               variant="outlined"
               style={{ flex: 1 }}
             />
-            <TextField
-              value={cPassword}
-              error={passwordHasError}
-              onChange={(e) => {
-                Handler.Input(e, setCPassword);
-              }}
-              type={"password"}
-              size="small"
-              label="パスワード確認"
-              variant="outlined"
-              style={{ flex: 1 }}
-            />
+            <TextField onChange={(e) => Handler.Input(e, setSei)} value={sei} size="small" label="姓" variant="outlined" style={{ flex: 1 }} />
+            <TextField onChange={(e) => Handler.Input(e, setMei)} value={mei} size="small" label="名" variant="outlined" style={{ flex: 1 }} />
           </div>
-        </Stack>
-      </div>
-      <div className="basicForm">
-        <h4>個人情報</h4>
-        <div style={{ display: "flex", gap: 20 }}>
-          <TextField
-            onChange={(e) => Handler.Input(e, setName)}
-            value={name}
-            size="small"
-            label="ニックネーム"
-            variant="outlined"
-            style={{ flex: 1 }}
-          />
-          <TextField onChange={(e) => Handler.Input(e, setSei)} value={sei} size="small" label="姓" variant="outlined" style={{ flex: 1 }} />
-          <TextField onChange={(e) => Handler.Input(e, setMei)} value={mei} size="small" label="名" variant="outlined" style={{ flex: 1 }} />
+          <LocalizationProvider dateAdapter={DateAdapter} locale={jaLocale}>
+            <MobileDatePicker
+              label="生年月日"
+              inputFormat="yyyy年 M月 d日"
+              value={birth}
+              onChange={(date) => setBirth(date)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         </div>
-        <LocalizationProvider dateAdapter={DateAdapter} locale={jaLocale}>
-          <MobileDatePicker
-            label="生年月日"
-            inputFormat="yyyy年 M月 d日"
-            value={birth}
-            onChange={(date) => setBirth(date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-      </div>
-      <div className="buttons">
-        <Button variant="outlined" disabled={isLoading} onClick={() => setStep(step - 1)}>
-          前へ
-        </Button>
-        <LoadingButton loading={isLoading} disabled={!fulfilled} variant="outlined" onClick={() => submit()}>
-          完了
-        </LoadingButton>
-      </div>
+        <div className="buttons">
+          <Button variant="outlined" disabled={isLoading} onClick={() => setStep(step - 1)}>
+            前へ
+          </Button>
+          <LoadingButton loading={isLoading} disabled={!fulfilled} variant="outlined" type="submit">
+            完了
+          </LoadingButton>
+        </div>
+      </form>
     </StepContent>
   );
 };
