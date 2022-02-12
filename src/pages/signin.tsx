@@ -1,7 +1,7 @@
 import { CheckBox, TextFieldsOutlined } from "@mui/icons-material";
 import { LoadingButton, LocalizationProvider, MobileDatePicker } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterDateFns";
-import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
 import Link from "next/link";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import App from "../components/App";
@@ -71,6 +71,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
   const [isLoading, setIsLoaoding] = useState(false);
   const checkPassword = () => {
     if (password && password !== cPassword) setPasswordHasError(true);
+    else if (password.length < 6) setPasswordHasError(true);
     else {
       setPasswordHasError(false);
     }
@@ -108,31 +109,35 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
           label="メールアドレス"
           variant="outlined"
         />
-        <div style={{ display: "flex", gap: 20 }}>
-          <TextField
-            value={password}
-            onChange={(e) => {
-              Handler.Input(e, setPassword);
-            }}
-            type={"password"}
-            size="small"
-            label="パスワード"
-            variant="outlined"
-            style={{ flex: 1 }}
-          />
-          <TextField
-            value={cPassword}
-            error={passwordHasError}
-            onChange={(e) => {
-              Handler.Input(e, setCPassword);
-            }}
-            type={"password"}
-            size="small"
-            label="パスワード確認"
-            variant="outlined"
-            style={{ flex: 1 }}
-          />
-        </div>
+        <Stack spacing={1}>
+          <small>パスワードは最低6文字以上必要です。</small>
+          <div style={{ display: "flex", gap: 20 }}>
+            <TextField
+              value={password}
+              onChange={(e) => {
+                Handler.Input(e, setPassword);
+              }}
+              error={passwordHasError}
+              type={"password"}
+              size="small"
+              label="パスワード"
+              variant="outlined"
+              style={{ flex: 1 }}
+            />
+            <TextField
+              value={cPassword}
+              error={passwordHasError}
+              onChange={(e) => {
+                Handler.Input(e, setCPassword);
+              }}
+              type={"password"}
+              size="small"
+              label="パスワード確認"
+              variant="outlined"
+              style={{ flex: 1 }}
+            />
+          </div>
+        </Stack>
       </div>
       <div className="basicForm">
         <h4>個人情報</h4>
