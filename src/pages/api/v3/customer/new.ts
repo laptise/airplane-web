@@ -7,11 +7,12 @@ interface FlatParams {
   [key: string]: string;
 }
 const handler: NextApiHandler = async (req, res) => {
+  console.log(req.body);
   if (req.method === "GET") {
     res.status(500).end();
     return;
   }
-  const { email, password, name, mei, sei, birth } = JSON.parse(req.body) as FlatParams;
+  const { email, password, name, mei, sei, birth } = req.body as FlatParams;
   if (!email || !password) {
     res.status(500).end();
     return;

@@ -8,6 +8,7 @@ import App from "../components/App";
 import { Handler } from "../components/EventHandlers";
 import jaLocale from "date-fns/locale/ja";
 import app from "../firebase";
+import axios from "axios";
 
 enum SigninStep {
   Agreement,
@@ -81,12 +82,15 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
 
   const submit = async () => {
     setIsLoaoding(true);
-    await fetch("/api/v3/customer/new", {
-      method: "POST",
-      body: JSON.stringify({ email, password, name, sei, mei, birth }),
-    });
-    setIsLoaoding(false);
-    setStep(step + 1);
+    await axios
+      .post("/api/v3/customer/new", { email, password, name, sei, mei, birth })
+      .then(() => {
+        setIsLoaoding(false);
+        setStep(step + 1);
+      })
+      .catch(() => {
+        setIsLoaoding(false);
+      });
   };
 
   useEffect(checkPassword, [password, cPassword]);
@@ -201,7 +205,7 @@ export default function Signin() {
           </Step>
         </ol>
         <div className="stepMask">
-          <div className="stepContents" style={{ left: 0 - step * 100 + "vw" }}>
+          <div className="stepContents">
             <Agreements stepState={stepState} />
             <BasicInfoSection stepState={stepState} />
             <Done stepState={stepState} />

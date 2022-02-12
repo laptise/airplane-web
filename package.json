@@ -23,6 +23,7 @@
     "@mui/material": "^5.4.1",
     "@mui/styled-engine-sc": "^5.4.1",
     "@types/stripe": "^8.0.417",
+    "axios": "^0.25.0",
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
     "date-fns": "^2.28.0",
