@@ -1,6 +1,8 @@
+import { createTheme, ThemeProvider } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 import Header from "./Header";
+import theme from "./Theme";
 
 interface AppProp {
   children: JSX.Element;
@@ -9,7 +11,7 @@ interface AppProp {
 }
 
 const App: React.FC<AppProp> = ({ children, bodyId, title }) => (
-  <>
+  <ThemeProvider theme={theme}>
     <Header pathname={"test"} title={title} />
     <main id={bodyId}>{children}</main>
     <footer>
@@ -22,7 +24,7 @@ const App: React.FC<AppProp> = ({ children, bodyId, title }) => (
         <a>運営会社</a>
       </nav>
     </footer>
-  </>
+  </ThemeProvider>
 );
 
 export default App;

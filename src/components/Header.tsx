@@ -37,7 +37,9 @@ const Header = ({ pathname, title }) => (
       <Link href="/">
         <h1>Airplane</h1>
       </Link>
-      <nav></nav>
+      <nav>
+        <Link href="/login">ログイン</Link>
+      </nav>
     </header>
   </>
 );

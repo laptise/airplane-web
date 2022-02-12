@@ -186,13 +186,6 @@ const Done: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) => {
 export default function Signin() {
   const stepState = useState(SigninStep.Agreement);
   const [step, setStep] = stepState;
-  useEffect(() => {
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Tab") {
-        event.preventDefault();
-      }
-    });
-  }, []);
   return (
     <App bodyId="signin" title="会員登録">
       <SigninContext.Provider value={{ password: "", cPassword: "", name: "", sei: "", mei: "", birth: null }}>
