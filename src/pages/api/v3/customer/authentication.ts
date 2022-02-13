@@ -1,7 +1,7 @@
 import { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier";
 import { NextApiRequest } from "next";
 import { Parser } from "../alg";
-import { ServerInstance } from "../instance";
+import { ServerInstance } from "../../../../components/OnServer";
 
 export const verifyIdToken = async (token: string): Promise<DecodedIdToken> => {
   return ServerInstance.firebase

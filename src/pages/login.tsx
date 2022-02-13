@@ -25,7 +25,7 @@ export default function Login() {
   };
 
   return (
-    <App bodyId="login" title="ログイン">
+    <App userName={null} bodyId="login" title="ログイン">
       <form onSubmit={submit}>
         <Stack spacing={2}>
           <h3>ログイン</h3>

@@ -4,7 +4,7 @@ import App from "../../components/App";
 
 export default function PremiumUser() {
   return (
-    <App title="公式" bodyId="premium">
+    <App userName="d" title="公式" bodyId="premium">
       <>
         <Welcome />
         <AboutAirplane />

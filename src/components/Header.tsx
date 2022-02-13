@@ -6,15 +6,38 @@ import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuthState } from "../store/auth/selector";
 import authSlice from "../store/auth/slice";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { getAuth } from "firebase/auth";
 import nookies from "nookies";
 import Users from "../firebase/firestore/user";
+import { useRouter } from "next/router";
 
-const Header = ({ pathname, title }) => {
+const UserMenu = ({ view }: { view: boolean }) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const { logout, login } = authSlice.actions;
+
+  return (
+    <Stack className="userMenu">
+      <a
+        onClick={() => {
+          getAuth().signOut();
+          router.reload();
+        }}
+      >
+        {" "}
+        sing out
+      </a>
+    </Stack>
+  );
+};
+
+const Header = ({ pathname, title, userName }) => {
   const dispatch = useDispatch();
   const { logout, login } = authSlice.actions;
   const { auth } = useAuthState();
+  const router = useRouter();
   useEffect(() => {
     getAuth().onAuthStateChanged(async (user) => {
       if (!user) {
@@ -54,17 +77,23 @@ const Header = ({ pathname, title }) => {
         <Link href="/">
           <h1>Airplane</h1>
         </Link>
-        <nav>
-          {auth ? (
+        <nav style={{ color: "black" }}>
+          {userName ? (
             <>
-              {auth.name}
-              <button
+              <Button
+                color="inherit"
                 onClick={() => {
                   getAuth().signOut();
+                  router.reload();
                 }}
+                style={{ fontWeight: "bold" }}
               >
-                <FontAwesomeIcon icon={faSignOut} />
-              </button>
+                <Stack spacing={2} direction="row" alignItems={"center"}>
+                  <FontAwesomeIcon icon={faUser} />
+                  {userName}
+                </Stack>
+              </Button>
+              <UserMenu view={false} />
             </>
           ) : (
             <Link href="/login">ログイン</Link>

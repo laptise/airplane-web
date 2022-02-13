@@ -7,9 +7,8 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { OnServer } from "../components/OnServer";
 
 export default function Home({ user }) {
-  console.log(user);
   return (
-    <App bodyId="home" title="ホーム">
+    <App userName={user?.name} bodyId="home" title="ホーム">
       <>
         <AboutAirplane />
         <QuickStart />
