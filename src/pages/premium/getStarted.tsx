@@ -17,7 +17,7 @@ const NewUser: React.FC = () => {
     window.alert("成功");
   };
   return (
-    <App title="認定ユーザーの登録" bodyId="newUser">
+    <App userName={null} title="認定ユーザーの登録" bodyId="newUser">
       <>
         EMAIL
         <input value={email} onInput={(e) => setEmail(e.currentTarget.value)} />
