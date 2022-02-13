@@ -4,7 +4,6 @@ import Stripe from "stripe";
 import stripeKey from "../../stripeKey.json";
 import admin from "firebase-admin";
 import serviceAccount from "../../airplane-e018c-firebase-adminsdk-a1qlt-15284639ba.json";
-import { UserEntity } from "../firebase/firestore/user";
 import { DocumentData } from "firebase/firestore";
 import { QueryDocumentSnapshot } from "firebase-functions/v1/firestore";
 import { verifyIdToken } from "../pages/api/v3/customer/authentication";
@@ -86,6 +85,6 @@ export class ServerSideProps {
 
   static UserOnly: GetServerSideProps = async (ctx) => {
     const user = await OnServer.getClientFromToken(ctx);
-    return user ? { props: { user: Utl.JSONParse(user) } } : { props: {}, redirect: { destination: "/login" } };
+    return user ? { props: { user: Utl.JSONParse(user) } } : { props: {}, redirect: { permanent: true, destination: "/login/" } };
   };
 }

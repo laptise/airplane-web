@@ -65,20 +65,6 @@ export const userConverter = {
   },
 };
 
-export interface UserEntity {
-  id: string;
-  createdAt: Date;
-  isPremium: boolean;
-  lcName: string;
-  name: string;
-  note: string;
-  paymentId: string;
-  updatedAt: Date;
-  sei: string;
-  mei: string;
-  birth: Date;
-}
-
 export default class Users {
   static colRef = collection(getFirestore(), "users").withConverter(userConverter);
 

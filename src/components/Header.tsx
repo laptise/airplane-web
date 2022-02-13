@@ -16,19 +16,18 @@ const UserMenu: React.FC<{ viewState: State<boolean> }> = ({ viewState }) => {
   const [, setViewState] = viewState;
   const dispatch = useDispatch();
   const router = useRouter();
+  const { logout, login } = authSlice.actions;
 
   useEffect(() => {
     document.onclick = (e) => !(e.target as HTMLElement).closest("userMenu") && setViewState(false);
     return () => (document.onclick = undefined);
   }, []);
-  const { logout, login } = authSlice.actions;
 
   return (
     <ul className="userMenu">
-      <button onClick={() => setViewState(false)}>x</button>
       <li
-        onClick={() => {
-          getAuth().signOut();
+        onClick={async () => {
+          await getAuth().signOut();
           router.reload();
         }}
       >
@@ -55,8 +54,8 @@ const Header = ({ pathname, title, userName }) => {
       } else {
         const token = await user.getIdToken(); // jwtを取得する
         const ent = (await Users.getFromUid(user.uid)).data();
-        dispatch(login(ent));
         nookies.set(null, "token", token, {}); // jwtをcookieに保存
+        dispatch(login(ent));
       }
     });
   }, []);
