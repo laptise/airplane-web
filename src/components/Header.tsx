@@ -9,20 +9,11 @@ import authSlice from "../store/auth/slice";
 import { Button } from "@mui/material";
 import { getAuth } from "firebase/auth";
 import nookies from "nookies";
-
-const LoginButton: React.FC = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  return (
-    <button id="topLoginButton">
-      <FontAwesomeIcon icon={faUser} />
-      ログイン
-    </button>
-  );
-};
+import Users from "../firebase/firestore/user";
 
 const Header = ({ pathname, title }) => {
   const dispatch = useDispatch();
-  const { logout } = authSlice.actions;
+  const { logout, login } = authSlice.actions;
   const { auth } = useAuthState();
   useEffect(() => {
     getAuth().onAuthStateChanged(async (user) => {
@@ -33,6 +24,8 @@ const Header = ({ pathname, title }) => {
         dispatch(logout());
       } else {
         const token = await user.getIdToken(); // jwtを取得する
+        const ent = (await Users.getFromUid(user.uid)).data();
+        dispatch(login(ent));
         nookies.set(null, "token", token, {}); // jwtをcookieに保存
       }
     });

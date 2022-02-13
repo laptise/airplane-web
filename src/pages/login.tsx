@@ -9,6 +9,9 @@ import { signinWithEmail } from "../firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
 import authSlice from "../store/auth/slice";
 import { useAuthState } from "../store/auth/selector";
+import { GetServerSideProps } from "next";
+import OnServer from "../components/OnServer";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,12 +20,13 @@ export default function Login() {
   const { login } = authSlice.actions;
   const auth = useAuthState();
 
+  const router = useRouter();
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     console.log("start");
     e.preventDefault();
     const res = await signinWithEmail(email, pw);
     dispatch(login(res));
-    console.log(res);
+    router.push("/");
   };
 
   return (
@@ -40,3 +44,10 @@ export default function Login() {
     </App>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const user = await OnServer.getClientFromToken(ctx);
+  if (user) return { props: {}, redirect: { destination: "/" } };
+  // DashboardPageにpropsを渡して遷移する
+  else return { props: {} };
+};
