@@ -7,7 +7,7 @@ import authSlice from "../store/auth/slice";
 import { useAuthState } from "../store/auth/selector";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { OnServer } from "../components/OnServer";
+import { OnServer, ServerSideProps } from "../components/OnServer";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -40,9 +40,4 @@ export default function Login() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const user = await OnServer.getClientFromToken(ctx);
-  if (user) return { props: {}, redirect: { destination: "/" } };
-  // DashboardPageにpropsを渡して遷移する
-  else return { props: {} };
-};
+export const getServerSideProps = ServerSideProps.CustomerOnly;

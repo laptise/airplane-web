@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import nookies from "nookies";
 import Stripe from "stripe";
 import stripeKey from "../../stripeKey.json";
@@ -8,6 +8,7 @@ import { UserEntity } from "../firebase/firestore/user";
 import { DocumentData } from "firebase/firestore";
 import { QueryDocumentSnapshot } from "firebase-functions/v1/firestore";
 import { verifyIdToken } from "../pages/api/v3/customer/authentication";
+import { Utl } from "./utils";
 
 const isSSR = typeof window === "undefined";
 
@@ -75,4 +76,16 @@ export class OnServer {
       return null;
     }
   }
+}
+
+export class ServerSideProps {
+  static CustomerOnly: GetServerSideProps = async (ctx) => {
+    const user = await OnServer.getClientFromToken(ctx);
+    return user ? { props: {}, redirect: { destination: "/user/" } } : { props: {} };
+  };
+
+  static UserOnly: GetServerSideProps = async (ctx) => {
+    const user = await OnServer.getClientFromToken(ctx);
+    return user ? { props: { user: Utl.JSONParse(user) } } : { props: {}, redirect: { destination: "/login" } };
+  };
 }

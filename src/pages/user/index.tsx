@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import App from "../../components/App";
-import { OnServer } from "../../components/OnServer";
+import { OnServer, ServerSideProps } from "../../components/OnServer";
 import { Utl } from "../../components/utils";
 
 const UserHome = ({ user }) => {
@@ -11,20 +11,6 @@ const UserHome = ({ user }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const user = await OnServer.getClientFromToken(ctx);
-  if (!user)
-    return {
-      props: { user: null },
-      redirect: {
-        destination: "/login",
-      },
-    };
-  // DashboardPageにpropsを渡して遷移する
-  else
-    return {
-      props: { user: Utl.JSONParse(user) },
-    };
-};
+export const getServerSideProps: GetServerSideProps = ServerSideProps.UserOnly;
 
 export default UserHome;

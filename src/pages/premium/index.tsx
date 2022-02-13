@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import Link from "next/link";
 import App from "../../components/App";
+import { ServerSideProps } from "../../components/OnServer";
 
 export default function PremiumUser() {
   return (
@@ -145,3 +146,5 @@ function GetStarted() {
     </section>
   );
 }
+
+export const getServerSideProps = ServerSideProps.CustomerOnly;
