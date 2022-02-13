@@ -19,8 +19,7 @@ export default function Login() {
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     console.log("start");
     e.preventDefault();
-    const res = await signinWithEmail(email, pw);
-    dispatch(login(res));
+    await signinWithEmail(email, pw);
     router.reload();
   };
 

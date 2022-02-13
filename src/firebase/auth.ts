@@ -1,6 +1,5 @@
 import { getAuth } from "@firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, getFirestore } from "firebase/firestore";
 import Users from "./firestore/user";
 
 export async function signinWithEmail(email: string, password: string): Promise<UserEntity> {
