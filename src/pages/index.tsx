@@ -102,5 +102,7 @@ function Slider() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const user = await OnServer.getClientFromToken(ctx);
-  return { props: { user: user ? JSON.parse(JSON.stringify(user)) : null } }; // DashboardPageにpropsを渡して遷移する
+  if (user) return { props: { user: null }, redirect: { destination: "/user/" } };
+  // DashboardPageにpropsを渡して遷移する
+  else return { props: {} };
 };

@@ -12,24 +12,29 @@ import nookies from "nookies";
 import Users from "../firebase/firestore/user";
 import { useRouter } from "next/router";
 
-const UserMenu = ({ view }: { view: boolean }) => {
+const UserMenu: React.FC<{ viewState: State<boolean> }> = ({ viewState }) => {
+  const [, setViewState] = viewState;
   const dispatch = useDispatch();
   const router = useRouter();
 
+  useEffect(() => {
+    document.onclick = (e) => !(e.target as HTMLElement).closest("userMenu") && setViewState(false);
+    return () => (document.onclick = undefined);
+  }, []);
   const { logout, login } = authSlice.actions;
 
   return (
-    <Stack className="userMenu">
-      <a
+    <ul className="userMenu">
+      <button onClick={() => setViewState(false)}>x</button>
+      <li
         onClick={() => {
           getAuth().signOut();
           router.reload();
         }}
       >
-        {" "}
         sing out
-      </a>
-    </Stack>
+      </li>
+    </ul>
   );
 };
 
@@ -37,6 +42,8 @@ const Header = ({ pathname, title, userName }) => {
   const dispatch = useDispatch();
   const { logout, login } = authSlice.actions;
   const { auth } = useAuthState();
+  const menuViewState = useState(false);
+  const [menuView, setMenuView] = menuViewState;
   const router = useRouter();
   useEffect(() => {
     getAuth().onAuthStateChanged(async (user) => {
@@ -53,6 +60,9 @@ const Header = ({ pathname, title, userName }) => {
       }
     });
   }, []);
+  const openMenu = () => {
+    setMenuView(true);
+  };
 
   return (
     <>
@@ -80,20 +90,13 @@ const Header = ({ pathname, title, userName }) => {
         <nav style={{ color: "black" }}>
           {userName ? (
             <>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  getAuth().signOut();
-                  router.reload();
-                }}
-                style={{ fontWeight: "bold" }}
-              >
+              <Button color="inherit" onClick={openMenu} style={{ fontWeight: "bold" }}>
                 <Stack spacing={2} direction="row" alignItems={"center"}>
                   <FontAwesomeIcon icon={faUser} />
                   {userName}
                 </Stack>
               </Button>
-              <UserMenu view={false} />
+              {menuView && <UserMenu viewState={menuViewState} />}
             </>
           ) : (
             <Link href="/login">ログイン</Link>

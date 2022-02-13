@@ -1,10 +1,11 @@
 import { GetServerSideProps } from "next";
 import App from "../../components/App";
 import { OnServer } from "../../components/OnServer";
+import { Utl } from "../../components/utils";
 
-const UserHome = () => {
+const UserHome = ({ user }) => {
   return (
-    <App userName="dd" bodyId="home" title="ホーム">
+    <App userName={user?.name} bodyId="home" title="ホーム">
       <div>da</div>
     </App>
   );
@@ -12,7 +13,18 @@ const UserHome = () => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const user = await OnServer.getClientFromToken(ctx);
-  return { props: { user: user ? JSON.parse(JSON.stringify(user)) : null } }; // DashboardPageにpropsを渡して遷移する
+  if (!user)
+    return {
+      props: { user: null },
+      redirect: {
+        destination: "/login",
+      },
+    };
+  // DashboardPageにpropsを渡して遷移する
+  else
+    return {
+      props: { user: Utl.JSONParse(user) },
+    };
 };
 
 export default UserHome;

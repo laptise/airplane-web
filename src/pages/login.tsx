@@ -21,7 +21,7 @@ export default function Login() {
     e.preventDefault();
     const res = await signinWithEmail(email, pw);
     dispatch(login(res));
-    router.push("/");
+    router.reload();
   };
 
   return (
