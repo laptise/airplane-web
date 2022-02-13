@@ -1,12 +1,8 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { FormEvent, useState } from "react";
 import App from "../components/App";
-
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "firebase-admin";
-import { getFirebase } from "../firebase";
 import { signinWithEmail } from "../firebase/auth";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import authSlice from "../store/auth/slice";
 import { useAuthState } from "../store/auth/selector";
 import { GetServerSideProps } from "next";
@@ -18,7 +14,6 @@ export default function Login() {
   const [pw, setPw] = useState("");
   const dispatch = useDispatch();
   const { login } = authSlice.actions;
-  const auth = useAuthState();
 
   const router = useRouter();
   const submit = async (e: FormEvent<HTMLFormElement>) => {
