@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from "next";
 import nookies from "nookies";
 
 const isSSR = typeof window === "undefined";
-export default class OnServer {
+export class OnServer {
   static async getClientFromToken(ctx: GetServerSidePropsContext) {
     try {
       if (!isSSR) throw null;

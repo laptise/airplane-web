@@ -10,8 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 import authSlice from "../store/auth/slice";
 import { useAuthState } from "../store/auth/selector";
 import { GetServerSideProps } from "next";
-import OnServer from "../components/OnServer";
 import { useRouter } from "next/router";
+import { OnServer } from "../components/OnServer";
 
 export default function Login() {
   const [email, setEmail] = useState("");

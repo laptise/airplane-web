@@ -3,13 +3,8 @@ import Link from "next/link";
 import KeyIcon from "@mui/icons-material/Key";
 import { FormEvent, useState } from "react";
 import App from "../components/App";
-import { useSelector, useDispatch } from "react-redux";
-import { useAuthState } from "../store/auth/selector";
-import authSlice from "../store/auth/slice";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import nookies from "nookies";
-import { userConverter, UserEntity } from "../firebase/firestore/user";
-import OnServer from "../components/OnServer";
+import { OnServer } from "../components/OnServer";
 
 export default function Home({ user }) {
   console.log(user);
