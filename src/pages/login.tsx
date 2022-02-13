@@ -5,17 +5,26 @@ import App from "../components/App";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "firebase-admin";
 import { getFirebase } from "../firebase";
+import { signinWithEmail } from "../firebase/auth";
+import { useSelector, useDispatch } from "react-redux";
+import authSlice from "../store/auth/slice";
+import { useAuthState } from "../store/auth/selector";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
+  const dispatch = useDispatch();
+  const { login } = authSlice.actions;
+  const auth = useAuthState();
+
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     console.log("start");
     e.preventDefault();
-    const auth = getAuth();
-    const sign = await signInWithEmailAndPassword(auth, email, pw);
-    console.log(sign);
+    const res = await signinWithEmail(email, pw);
+    dispatch(login(res));
+    console.log(res);
   };
+
   return (
     <App bodyId="login" title="ログイン">
       <form onSubmit={submit}>

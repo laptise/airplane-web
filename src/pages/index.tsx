@@ -3,8 +3,15 @@ import Link from "next/link";
 import KeyIcon from "@mui/icons-material/Key";
 import { FormEvent, useState } from "react";
 import App from "../components/App";
+import { useSelector, useDispatch } from "react-redux";
+import { useAuthState } from "../store/auth/selector";
+import authSlice from "../store/auth/slice";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import nookies from "nookies";
+import { userConverter, UserEntity } from "../firebase/firestore/user";
 
-export default function Home() {
+export default function Home({ user }) {
+  console.log(user);
   return (
     <App bodyId="home" title="ホーム">
       <>
@@ -97,3 +104,26 @@ function Slider() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  try {
+    const cookies = nookies.get(ctx); // ブラウザ側で設定したCookieを取得
+    if (!cookies) throw "no Cookie";
+    const { verifyIdToken } = await import("../pages/api/v3/customer/authentication");
+    const { uid } = await verifyIdToken(cookies["token"]); // CookieからJWTを取得し検証する
+    const { ServerInstance } = await import("./api/v3/instance");
+    const user = await ServerInstance.userColRef
+      .doc(uid)
+      .get()
+      .then((doc) => doc.data());
+
+    return { props: { user: JSON.parse(JSON.stringify(user)) } }; // DashboardPageにpropsを渡して遷移する
+  } catch (error) {
+    console.error(error); // エラーをコンソールに表示しておく
+
+    return {
+      // 認証に失敗したら、ログイン画面へリダイレクト
+      props: {} as never,
+    };
+  }
+};

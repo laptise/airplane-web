@@ -1,32 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserCredential } from "firebase/auth";
+import Users, { UserEntity } from "../../firebase/firestore/user";
 
-export type CounterState = {
-  count: number;
-  loading: boolean;
-  error: boolean;
-  errorMessage: string;
-};
+export const initialState: UserEntity | null = null;
 
-export const initialState: CounterState = {
-  count: 0,
-  loading: false,
-  error: false,
-  errorMessage: "",
-};
-
-const counterSlice = createSlice({
-  name: "counter",
+const authSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {
-    incrementCounter: (state, action: PayloadAction<number>) => ({
-      ...state,
-      count: state.count + action.payload,
+    login: (_, action: PayloadAction<UserEntity | null>) => ({
+      ...action.payload,
     }),
-    decrementCounter: (state, action: PayloadAction<number>) => ({
-      ...state,
-      count: state.count - action.payload,
-    }),
+    logout: () => initialState,
   },
 });
 
-export default counterSlice;
+export default authSlice;

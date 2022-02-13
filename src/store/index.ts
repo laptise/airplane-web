@@ -1,21 +1,21 @@
 import { Store, combineReducers } from "redux";
 import logger from "redux-logger";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import counterSlice, { initialState as counterState } from "./auth/slice";
+import authSlice, { initialState } from "./auth/slice";
 
 const rootReducer = combineReducers({
-  counter: counterSlice.reducer,
+  auth: authSlice.reducer,
 });
 
 const preloadedState = () => {
-  return { counter: counterState };
+  return { auth: initialState };
 };
 
 export type StoreState = ReturnType<typeof preloadedState>;
 
 export type ReduxStore = Store<StoreState>;
 
-const createStore = () => {
+const createStore = (() => {
   const middlewareList = [...getDefaultMiddleware(), logger];
 
   return configureStore({
@@ -24,6 +24,6 @@ const createStore = () => {
     devTools: process.env.NODE_ENV !== "production",
     preloadedState: preloadedState(),
   });
-};
+})();
 
 export default createStore;

@@ -1,8 +1,10 @@
 import { createTheme, ThemeProvider } from "@mui/material";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React from "react";
 import Header from "./Header";
 import theme from "./Theme";
+import nookies from "nookies";
 
 interface AppProp {
   children: JSX.Element;
