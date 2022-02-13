@@ -2,7 +2,7 @@ import { createHash } from "crypto";
 import { Timestamp } from "firebase/firestore";
 import { NextApiHandler } from "next";
 import HttpStatusCode from "../../../../httpCodes";
-import { ServerInstance } from "../instance";
+import { ServerInstance } from "../../../../components/OnServer";
 
 interface FlatParams {
   [key: string]: string;

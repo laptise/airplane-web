@@ -1,6 +1,6 @@
 import { NextApiHandler } from "next";
 import HttpStatusCode from "../../../../httpCodes";
-import { ServerInstance } from "../instance";
+import { ServerInstance } from "../../../../components/OnServer";
 import { getStripeInfoFromToken } from "./authentication";
 
 const getInfo: NextApiHandler = async (req, res) => {
