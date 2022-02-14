@@ -11,6 +11,7 @@ import { getAuth } from "firebase/auth";
 import nookies from "nookies";
 import Users from "../firebase/firestore/user";
 import { useRouter } from "next/router";
+import { tokenLogout } from "../firebase/auth";
 
 const UserMenu: React.FC<{ viewState: State<boolean> }> = ({ viewState }) => {
   const [, setViewState] = viewState;
@@ -27,7 +28,7 @@ const UserMenu: React.FC<{ viewState: State<boolean> }> = ({ viewState }) => {
     <ul className="userMenu">
       <li
         onClick={async () => {
-          await getAuth().signOut();
+          await tokenLogout();
           router.reload();
         }}
       >
@@ -44,21 +45,21 @@ const Header = ({ pathname, title, userName }) => {
   const menuViewState = useState(false);
   const [menuView, setMenuView] = menuViewState;
   const router = useRouter();
-  useEffect(() => {
-    getAuth().onAuthStateChanged(async (user) => {
-      if (!user) {
-        console.log("dasda");
-        nookies.destroy(null, "token"); // cookiesを削除
-        nookies.set(null, "token", "", {}); // ユーザーがログアウトしたらcookieを破棄
-        dispatch(logout());
-      } else {
-        const token = await user.getIdToken(); // jwtを取得する
-        const ent = (await Users.getFromUid(user.uid)).data();
-        nookies.set(null, "token", token, {}); // jwtをcookieに保存
-        dispatch(login(ent));
-      }
-    });
-  }, []);
+  // useEffect(
+  //   () =>
+  //     getAuth().onAuthStateChanged(async (user) => {
+  //       if (!user) {
+  //         console.log("dasda");
+  //         nookies.destroy(null, "token"); // cookiesを削除
+  //         nookies.set(null, "token", "", {}); // ユーザーがログアウトしたらcookieを破棄
+  //       } else {
+  //         console.log("is on");
+  //         const token = await user.getIdToken(); // jwtを取得する
+  //         nookies.set(null, "token", token, {}); // jwtをcookieに保存
+  //       }
+  //     }),
+  //   []
+  // );
   const openMenu = () => {
     setMenuView(true);
   };

@@ -1,11 +1,16 @@
 import { getAuth } from "@firebase/auth";
+import axios from "axios";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Users from "./firestore/user";
 
-export async function signinWithEmail(email: string, password: string): Promise<UserEntity> {
-  const auth = getAuth();
-  const credential = await signInWithEmailAndPassword(auth, email, password);
-  const snapshot = await Users.getFromUid(credential.user.uid);
-  const authInfo = snapshot.data() as any;
-  return authInfo;
+export async function tokenLogin(email: string, password: string) {
+  await signInWithEmailAndPassword(getAuth(), email, password).then((user) =>
+    user.user.getIdToken().then((idToken) => {
+      return axios.post("/api/v3/customer/sessionLogin", { idToken });
+    })
+  );
+}
+
+export async function tokenLogout() {
+  await axios.post("/api/v3/customer/sessionLogout");
 }

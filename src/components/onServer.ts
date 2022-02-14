@@ -19,10 +19,12 @@ export class ServerInstance {
       apiVersion: "2020-08-27",
     });
   }
+
   static get firebase() {
     if (!isSSR) throw new Error("server only importable");
     if (admin.apps.length === 0) {
-      return admin.initializeApp({ credential: admin.credential.cert(serviceAccount as any) });
+      const app = admin.initializeApp({ credential: admin.credential.cert(serviceAccount as any) });
+      return app;
     } else {
       return admin.apps[0];
     }
@@ -61,17 +63,24 @@ export class ServerInstance {
 export class OnServer {
   static async getClientFromToken(ctx: GetServerSidePropsContext) {
     try {
-      if (!isSSR) throw null;
+      if (!isSSR) throw "is Not SSR";
       const cookies = nookies.get(ctx); // ブラウザ側で設定したCookieを取得
-      if (!cookies?.["token"]) throw "no Cookie";
-      const { uid } = await verifyIdToken(cookies["token"]); // CookieからJWTを取得し検証する
+      const { uid } = await admin
+        .auth()
+        .verifySessionCookie(cookies["session"])
+        .catch(() => {
+          throw "Verify failed";
+        });
       const user = await ServerInstance.userColRef
         .doc(uid)
         .get()
-        .then((doc) => doc.data());
-      console.log(user);
+        .then((doc) => doc.data())
+        .catch(() => {
+          throw "No User";
+        });
       return user;
-    } catch {
+    } catch (e) {
+      console.log(e);
       return null;
     }
   }

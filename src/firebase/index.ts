@@ -1,5 +1,7 @@
 // Import the functions you need from the SDKs you need
+import { Auth } from "firebase-admin/lib/auth/auth";
 import { initializeApp } from "firebase/app";
+import { inMemoryPersistence, getAuth, setPersistence } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,3 +23,5 @@ export function getFirebase() {
   return initializeApp(firebaseConfig);
 }
 export default app;
+
+setPersistence(getAuth(app), inMemoryPersistence);

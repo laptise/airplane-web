@@ -1,13 +1,14 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { FormEvent, useState } from "react";
 import App from "../components/App";
-import { signinWithEmail } from "../firebase/auth";
+import { tokenLogin } from "../firebase/auth";
 import { useDispatch } from "react-redux";
 import authSlice from "../store/auth/slice";
 import { useAuthState } from "../store/auth/selector";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { OnServer, ServerSideProps } from "../components/OnServer";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ export default function Login() {
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     console.log("start");
     e.preventDefault();
-    await signinWithEmail(email, pw);
+    await tokenLogin(email, pw);
     router.reload();
   };
 
