@@ -1,7 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import nookies from "nookies";
 import Stripe from "stripe";
-import stripeKey from "../../stripeKey.json";
 import admin, { initializeApp } from "firebase-admin";
 import serviceAccount from "../../airplane-e018c-firebase-adminsdk-a1qlt-15284639ba.json";
 import { DocumentData } from "firebase/firestore";
