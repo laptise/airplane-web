@@ -29,7 +29,7 @@ const UserMenu: React.FC<{ viewState: State<boolean> }> = ({ viewState }) => {
       <li
         onClick={async () => {
           await tokenLogout();
-          router.reload();
+          router.push("/login");
         }}
       >
         sing out
