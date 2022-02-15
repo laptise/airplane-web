@@ -1,12 +1,9 @@
 import { Stack, TextField } from "@mui/material";
-import { Box } from "@mui/system";
-import { getAuth } from "firebase/auth";
 import { GetServerSideProps } from "next";
 import App from "../../components/App";
-import { OnServer, ServerSideProps } from "../../components/OnServer";
-
+import { ServerSideProps } from "../../components/OnServer";
 const SelfBadge: AuthFC = ({ user }) => {
-  const email = getAuth().currentUser?.email;
+  const { email } = user;
   return (
     <Stack className="profile" direction={"row"} spacing={1}>
       <div className="iconBox"></div>

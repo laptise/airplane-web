@@ -1,3 +1,6 @@
+/// <reference path="firebase/auth" />
+
+///ref
 interface UserEntity {
   id: string;
   createdAt: Date;
@@ -12,5 +15,13 @@ interface UserEntity {
   birth: Date;
 }
 
+interface AuthUser extends UserEntity {
+  uid: string;
+  picture?: string;
+  phone_number?: string;
+  email_verified?: boolean;
+  email?: string;
+}
+
 type State<T> = [T, React.Dispatch<React.SetStateAction<T>>];
-type AuthFC = React.FC<{ user: UserEntity }>;
+type AuthFC = React.FC<{ user: AuthUser }>;

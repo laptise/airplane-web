@@ -70,17 +70,16 @@ export class OnServer {
     try {
       if (!isSSR) throw "is Not SSR";
       const cookies = nookies.get(ctx); // ブラウザ側で設定したCookieを取得
-      console.log("cookies are ", cookies);
       const session = cookies.__session?.toString?.() || "";
-      console.log("session is", cookies);
       if (!session) throw "empty cookie";
-      const { uid } = await ServerInstance.firebase
+      const userCrenetial = await ServerInstance.firebase
         .auth()
         .verifySessionCookie(session, true)
         .catch((e) => {
           console.log(e);
           throw "Verify failed";
         });
+      const { uid } = userCrenetial;
       if (!uid) throw "Verify failed";
       const user = await ServerInstance.userColRef
         .doc(uid)
@@ -89,7 +88,7 @@ export class OnServer {
         .catch(() => {
           throw "No User";
         });
-      return user;
+      return { ...user, ...userCrenetial };
     } catch (e) {
       console.log(e);
       return null;
