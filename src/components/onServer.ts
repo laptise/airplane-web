@@ -13,9 +13,8 @@ const isSSR = typeof window === "undefined";
 
 export class ServerInstance {
   static get stripe() {
-    console.log("key", stripeKey.secret_key);
     if (!isSSR) throw new Error("server only importable");
-    return new Stripe(stripeKey.secret_key, {
+    return new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: "2020-08-27",
     });
   }
@@ -76,6 +75,7 @@ export class OnServer {
           console.log(e);
           throw "Verify failed";
         });
+      if (!uid) throw "Verify failed";
       const user = await ServerInstance.userColRef
         .doc(uid)
         .get()
