@@ -1,4 +1,4 @@
-import { ServerInstance } from "../../../components/OnServer";
+import { ServerInstance } from "./OnServer";
 
 export class Parser {
   static async getStripeUserFromToken(token: string) {
