@@ -19,7 +19,7 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   // Cookieに保存されているセッションIDを削除
-  destroyCookie({ res }, "session", { path: "/" });
+  destroyCookie({ res }, "__session", { path: "/" });
 
   res.send(JSON.stringify({ status: "success" }));
 };

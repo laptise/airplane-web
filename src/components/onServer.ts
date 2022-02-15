@@ -2,7 +2,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import nookies from "nookies";
 import Stripe from "stripe";
 import stripeKey from "../../stripeKey.json";
-import admin from "firebase-admin";
+import admin, { initializeApp } from "firebase-admin";
 import serviceAccount from "../../airplane-e018c-firebase-adminsdk-a1qlt-15284639ba.json";
 import { DocumentData } from "firebase/firestore";
 import { QueryDocumentSnapshot } from "firebase-functions/v1/firestore";
@@ -23,7 +23,7 @@ export class ServerInstance {
   static get firebase() {
     if (!isSSR) throw new Error("server only importable");
     if (admin.apps.length === 0) {
-      const app = admin.initializeApp({ credential: admin.credential.cert(serviceAccount as any) });
+      const app = admin.initializeApp({ projectId: "airplane-e018c", credential: admin.credential.cert(serviceAccount as any) });
       return app;
     } else {
       return admin.apps[0];
@@ -65,10 +65,15 @@ export class OnServer {
     try {
       if (!isSSR) throw "is Not SSR";
       const cookies = nookies.get(ctx); // ブラウザ側で設定したCookieを取得
-      const { uid } = await admin
+      console.log("cookies are ", cookies);
+      const session = cookies.__session?.toString?.() || "";
+      console.log("session is", cookies);
+      if (!session) throw "empty cookie";
+      const { uid } = await ServerInstance.firebase
         .auth()
-        .verifySessionCookie(cookies["session"])
-        .catch(() => {
+        .verifySessionCookie(session, true)
+        .catch((e) => {
+          console.log(e);
           throw "Verify failed";
         });
       const user = await ServerInstance.userColRef
