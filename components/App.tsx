@@ -11,11 +11,12 @@ interface AppProp {
   bodyId: string;
   title: string;
   userName: string;
+  headerClass?: string;
 }
 
-const App: React.FC<AppProp> = ({ children, bodyId, title, userName }) => (
+const App: React.FC<AppProp> = ({ children, bodyId, title, userName, headerClass }) => (
   <ThemeProvider theme={theme}>
-    <Header userName={userName} pathname={"test"} title={title} />
+    <Header userName={userName} pathname={"test"} title={title} headerClass={headerClass} />
     <main id={bodyId}>{children}</main>
     <footer>
       <h4>Airplane</h4>

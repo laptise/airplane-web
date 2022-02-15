@@ -38,7 +38,12 @@ const UserMenu: React.FC<{ viewState: State<boolean> }> = ({ viewState }) => {
   );
 };
 
-const Header = ({ pathname, title, userName }) => {
+const Header: React.FC<{ pathname: string; title: string; userName: string; headerClass?: string }> = ({
+  pathname,
+  title,
+  userName,
+  headerClass,
+}) => {
   const dispatch = useDispatch();
   const { logout, login } = authSlice.actions;
   const { auth } = useAuthState();
@@ -83,7 +88,7 @@ const Header = ({ pathname, title, userName }) => {
           }}
         />
       </Head>
-      <header>
+      <header className={headerClass}>
         <Link href="/">
           <h1>Airplane</h1>
         </Link>

@@ -1,26 +1,27 @@
 &#userDashboard {
-  padding: 20px;
-  display: grid;
-  grid-template://
-    "profile       searchNewPrem" //
-    "premUsers     contextTab";
-  grid-template-columns: 200px auto;
-  .profile {
-    grid-area: profile;
-    .iconBox {
-      width: 50px;
-      height: 50px;
-      background-color: #ccc;
-      border-radius: 50px;
+  display: flex;
+  height: 100%;
+  float: 1;
+  .leftBar {
+    padding: 20px;
+    width: 120px;
+    background-color: $cyellow;
+    .profile {
+      .iconBox {
+        width: 60px;
+        height: 60px;
+        background-color: #ccc;
+        border-radius: 100%;
+      }
     }
-  }
-  .searchNewPrem {
-    grid-area: searchNewPrem;
-  }
-  .premUsers {
-    grid-area: premUsers;
-  }
-  .contextTab {
-    grid-area: contextTab;
+    .userMenu {
+      .menuItem {
+        filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+        cursor: pointer;
+        &:hover {
+          color: white;
+        }
+      }
+    }
   }
 }

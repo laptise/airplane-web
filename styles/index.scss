@@ -26,6 +26,15 @@ body {
   font-style: normal;
   margin: 0;
   padding: 0;
+  width: 100%;
+  position: fixed;
+  height: 100%;
+  > div {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+  }
   ul {
     padding: 0;
   }
@@ -49,6 +58,10 @@ body {
     margin: 0;
   }
   header {
+    &.user {
+      background-color: white;
+      height: 20px;
+    }
     position: sticky;
     top: 0;
     display: flex;
