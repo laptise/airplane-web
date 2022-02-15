@@ -5,7 +5,6 @@ import admin, { initializeApp } from "firebase-admin";
 import serviceAccount from "../../airplane-e018c-firebase-adminsdk-a1qlt-15284639ba.json";
 import { DocumentData } from "firebase/firestore";
 import { QueryDocumentSnapshot } from "firebase-functions/v1/firestore";
-import { verifyIdToken } from "../pages/api/v3/customer/authentication";
 import { Utl } from "./utils";
 
 const isSSR = typeof window === "undefined";
