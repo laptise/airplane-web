@@ -3,7 +3,8 @@
   display: grid;
   grid-template://
     "profile       searchNewPrem" //
-    "premUsers     premUsers";
+    "premUsers     contextTab";
+  grid-template-columns: 200px auto;
   .profile {
     grid-area: profile;
     .iconBox {
@@ -18,5 +19,8 @@
   }
   .premUsers {
     grid-area: premUsers;
+  }
+  .contextTab {
+    grid-area: contextTab;
   }
 }
