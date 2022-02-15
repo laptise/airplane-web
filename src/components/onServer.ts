@@ -2,7 +2,6 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import nookies from "nookies";
 import Stripe from "stripe";
 import admin, { initializeApp } from "firebase-admin";
-import serviceAccount from "../../airplane-e018c-firebase-adminsdk-a1qlt-15284639ba.json";
 import { DocumentData } from "firebase/firestore";
 import { QueryDocumentSnapshot } from "firebase-functions/v1/firestore";
 import { Utl } from "./utils";
@@ -20,7 +19,16 @@ export class ServerInstance {
   static get firebase() {
     if (!isSSR) throw new Error("server only importable");
     if (admin.apps.length === 0) {
-      const app = admin.initializeApp({ projectId: "airplane-e018c", credential: admin.credential.cert(serviceAccount as any) });
+      const serviceAccount: admin.ServiceAccount = {
+        projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
+        privateKey: (process.env.FIREBASE_ADMIN_PRIVATE_KEY || "").replace(/\\n/g, "\n"),
+      };
+      const option: admin.AppOptions = {
+        projectId: "airplane-e018c",
+        credential: admin.credential.cert(serviceAccount),
+      };
+      const app = admin.initializeApp(option);
       return app;
     } else {
       return admin.apps[0];
