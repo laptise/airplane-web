@@ -8,7 +8,7 @@ const handler: NextApiHandler = async (req, res) => {
   const auth = ServerInstance.firebase.auth();
 
   // Cookieに保存されているセッションIDを取得する
-  const sessionId = parseCookies({ req }).session || "";
+  const sessionId = parseCookies({ req }).__session || "";
 
   // セッションIDから認証情報を取得する
   const decodedClaims = await auth.verifySessionCookie(sessionId).catch(() => null);
