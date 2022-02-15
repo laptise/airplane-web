@@ -11,6 +11,7 @@ const isSSR = typeof window === "undefined";
 
 export class ServerInstance {
   static get stripe() {
+    console.log("is new");
     if (!isSSR) throw new Error("server only importable");
     return new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: "2020-08-27",
