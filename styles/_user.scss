@@ -35,6 +35,10 @@
   .contextBody {
     display: flex;
     flex: 1;
+    background-color: #fff9ea;
+    .feed {
+      height: 100%;
+    }
     .chat {
       height: 100%;
       .friends {

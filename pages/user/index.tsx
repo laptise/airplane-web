@@ -86,7 +86,7 @@ const Chat: React.FC = () => {
 };
 
 const Feed: React.FC = () => {
-  return <Stack>feed</Stack>;
+  return <Stack className="feed">まだフィードがありません!</Stack>;
 };
 
 const Soccer: React.FC = () => {
