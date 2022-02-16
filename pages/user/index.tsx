@@ -47,42 +47,90 @@ const ContextTab: AuthFC = ({ user }) => {
   );
 };
 
-const LeftBar: AuthFC = ({ user }) => {
+interface LeftBarProps {
+  user: AuthUser;
+  menuState: State<UserMenu>;
+}
+
+const LeftBar: React.FC<LeftBarProps> = ({ user, menuState }) => {
+  const [menu, setMenu] = menuState;
   return (
     <Stack className="leftBar" spacing={2}>
       <SelfBadge user={user} />
       <Stack className="userMenu" direction={"column"} flex={1} justifyContent="space-around">
-        <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
-          <FontAwesomeIcon icon={faPaperPlane} size={"lg"} />
-          チャット
-        </Stack>
-        <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
-          <FontAwesomeIcon icon={faTimeline} size={"lg"} />
-          フィード
-        </Stack>
-        <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
-          <FontAwesomeIcon icon={faSoccerBall} size={"lg"} />
-          サッカー
-        </Stack>
-        <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
-          <FontAwesomeIcon icon={faSearch} size={"lg"} />
-          検索
-        </Stack>
+        <a onClick={() => setMenu(UserMenu.Chat)}>
+          <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+            <FontAwesomeIcon icon={faPaperPlane} size={"lg"} />
+            チャット
+          </Stack>
+        </a>
+        <a onClick={() => setMenu(UserMenu.Feed)}>
+          <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+            <FontAwesomeIcon icon={faTimeline} size={"lg"} />
+            フィード
+          </Stack>
+        </a>
+        <a onClick={() => setMenu(UserMenu.Soccer)}>
+          <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+            <FontAwesomeIcon icon={faSoccerBall} size={"lg"} />
+            サッカー
+          </Stack>
+        </a>
+        <a onClick={() => setMenu(UserMenu.Search)}>
+          <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+            <FontAwesomeIcon icon={faSearch} size={"lg"} />
+            検索
+          </Stack>
+        </a>
       </Stack>
     </Stack>
   );
 };
 
+enum UserMenu {
+  Chat,
+  Feed,
+  Soccer,
+  Search,
+}
+
+const Chat: React.FC = () => {
+  return <Stack>chat</Stack>;
+};
+
+const Feed: React.FC = () => {
+  return <Stack>feed</Stack>;
+};
+
+const Soccer: React.FC = () => {
+  return <Stack>soccer</Stack>;
+};
+
+const Search: React.FC = () => {
+  return <Stack>seach</Stack>;
+};
+
+const ContextBody: React.FC<LeftBarProps> = ({ user, menuState }) => {
+  const [currentMenu, setCurrentMenu] = menuState;
+  return (
+    <Stack className="contextBody">
+      {currentMenu === UserMenu.Chat && <Chat />}
+      {currentMenu === UserMenu.Feed && <Feed />}
+      {currentMenu === UserMenu.Soccer && <Soccer />}
+      {currentMenu === UserMenu.Search && <Search />}
+    </Stack>
+  );
+};
+
 const UserHome: AuthFC = ({ user }) => {
+  const currentMenuState = useState(UserMenu.Chat);
+  const [currentMenu, setCurrentMenu] = currentMenuState;
+  console.log(currentMenu);
   return (
     <App headerClass="user" userName={user?.name} bodyId="userDashboard" title="ホーム">
       <>
-        <LeftBar user={user} />
-        <Stack className="searchNewPrem">
-          <TextField size="small" label="認定ユーザーを検索" />
-        </Stack>
-        <PremUsers user={user} />
-        <ContextTab user={user} />
+        <LeftBar user={user} menuState={currentMenuState} />
+        <ContextBody user={user} menuState={currentMenuState} />
       </>
     </App>
   );

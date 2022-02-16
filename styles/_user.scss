@@ -4,7 +4,7 @@
   float: 1;
   .leftBar {
     padding: 20px;
-    width: 120px;
+    width: 100px;
     background-color: $cyellow;
     .profile {
       .iconBox {
@@ -15,13 +15,20 @@
       }
     }
     .userMenu {
+      a {
+        text-decoration: none;
+      }
       .menuItem {
-        filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.3));
+        filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
         cursor: pointer;
         &:hover {
           color: white;
         }
       }
     }
+  }
+  .contextBody {
+    display: flex;
+    flex: 1;
   }
 }
