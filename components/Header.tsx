@@ -13,7 +13,7 @@ import Users from "../firebase/firestore/user";
 import { useRouter } from "next/router";
 import { tokenLogout } from "../firebase/auth";
 
-const UserMenu: React.FC<{ viewState: State<boolean> }> = ({ viewState }) => {
+const UserMenu: React.FC<{ viewState: State<boolean>; onSubscribeOpen?: () => void }> = ({ viewState, onSubscribeOpen }) => {
   const [, setViewState] = viewState;
   const dispatch = useDispatch();
   const router = useRouter();
@@ -26,24 +26,20 @@ const UserMenu: React.FC<{ viewState: State<boolean> }> = ({ viewState }) => {
 
   return (
     <ul className="userMenu">
+      <li onClick={() => onSubscribeOpen?.()}>プラン管理</li>
       <li
         onClick={async () => {
           await tokenLogout();
           router.push("/login");
         }}
       >
-        sing out
+        ログアウト
       </li>
     </ul>
   );
 };
 
-const Header: React.FC<{ pathname: string; title: string; userName: string; headerClass?: string }> = ({
-  pathname,
-  title,
-  userName,
-  headerClass,
-}) => {
+const Header: React.FC<AppProp> = ({ title, userName, headerClass, onSubscribeOpen }) => {
   const dispatch = useDispatch();
   const { logout, login } = authSlice.actions;
   const { auth } = useAuthState();
@@ -101,7 +97,7 @@ const Header: React.FC<{ pathname: string; title: string; userName: string; head
                   {userName}
                 </Stack>
               </Button>
-              {menuView && <UserMenu viewState={menuViewState} />}
+              {menuView && <UserMenu onSubscribeOpen={onSubscribeOpen} viewState={menuViewState} />}
             </>
           ) : (
             <Link href="/login">ログイン</Link>

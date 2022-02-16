@@ -25,3 +25,11 @@ interface AuthUser extends UserEntity {
 
 type State<T> = [T, React.Dispatch<React.SetStateAction<T>>];
 type AuthFC = React.FC<{ user: AuthUser }>;
+
+interface AppProp {
+  bodyId?: string;
+  title: string;
+  userName: string;
+  headerClass?: string;
+  onSubscribeOpen?: () => void;
+}

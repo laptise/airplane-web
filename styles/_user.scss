@@ -2,10 +2,15 @@
   display: flex;
   height: 100%;
   float: 1;
+
   .leftBar {
     padding: 20px;
     width: 100px;
     background-color: $cyellow;
+    z-index: 1;
+    * {
+      color: $cdark;
+    }
     .profile {
       .iconBox {
         width: 60px;
@@ -19,7 +24,7 @@
         text-decoration: none;
       }
       .menuItem {
-        filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+        filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
         cursor: pointer;
         &:hover {
           color: white;
@@ -30,5 +35,87 @@
   .contextBody {
     display: flex;
     flex: 1;
+    .chat {
+      height: 100%;
+      .friends {
+        background-color: #ffe391;
+        width: 340px;
+        height: 100%;
+        .header {
+          box-sizing: border-box;
+          width: 100%;
+          background-color: rgba(255, 255, 255, 0.3);
+          padding: 15px;
+          display: flex;
+          input {
+            all: unset;
+            font-size: 13px;
+            background-color: white;
+            border-radius: 20px;
+            width: 100%;
+            padding: 2.5px 10px;
+            &:focus {
+              outline: none;
+              box-shadow: 0 0 0 calc(1em * 1 / 16) #f0f1f3, 0 0 0 calc(calc(1em * 3 / 16) + calc(1em * 1 / 16)) #74c0fc;
+            }
+          }
+        }
+      }
+    }
+  }
+  .subscribeSettingModal {
+    animation: fadein 300ms ease-out;
+    background-color: white;
+    position: fixed;
+    top: 200px;
+    left: 50%;
+    z-index: 3;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    > div {
+      padding: 10px;
+    }
+
+    .header {
+      display: flex;
+      gap: 10px;
+      flex-direction: row;
+      background-color: $corange;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      align-items: center;
+      button {
+        all: unset;
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+        svg {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    flex-direction: column-reverse;
+    .leftBar {
+      width: 100%;
+      flex-direction: row;
+      box-sizing: border-box;
+      .profile {
+        display: none;
+      }
+      .userMenu {
+        flex-direction: row;
+        margin-top: 0;
+      }
+    }
+    .contextBody {
+      .chat {
+        .friends {
+          width: 100%;
+        }
+      }
+    }
   }
 }
