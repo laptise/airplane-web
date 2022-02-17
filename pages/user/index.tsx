@@ -1,7 +1,7 @@
 import { faFeed, faPaperPlane, faSearch, faSoccerBall, faStream, faTimeline, faTimes, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Button, Stack, Tab, Tabs, TextField } from "@mui/material";
+import { Box, Button, Stack, Tab, Tabs, TextField } from "@mui/material";
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import { FormEvent, useRef, useState } from "react";
@@ -102,18 +102,20 @@ const FriendList: React.FC = () => {
 };
 
 const SearchSubMenu: React.FC = () => {
-  const [datas, setDatas] = useState([] as any[]);
+  const [datas, setDatas] = useState([] as UserEntity[]);
   const search = async (msg: string) => {
-    const res = await axios.get(`/api/v1/premiumUser/?q=${msg}`);
+    const res = await axios.get<UserEntity[]>(`/api/v1/premiumUser/?q=${msg}`);
     setDatas(res.data);
-    console.log(res.data);
   };
 
   return (
     <Stack className="subMenu" direction={"column"}>
       <SubMenuHeader title="検索" search={search} />
       {datas.map((x, index) => (
-        <span key={index}>{x.name}</span>
+        <Stack className="singlePremiumUser" key={x.id} direction="row" alignItems={"center"} spacing={1}>
+          <Box className="thumb" width={30} height={30}></Box>
+          <span>{x.name}</span>
+        </Stack>
       ))}
     </Stack>
   );

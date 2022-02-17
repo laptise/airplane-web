@@ -69,6 +69,13 @@
     }
     .searchUser {
       height: 100%;
+      .singlePremiumUser {
+        .thumb {
+          background-color: #ccc;
+          border-radius: 100%;
+        }
+        padding: 10px;
+      }
     }
   }
   .subscribeSettingModal {
