@@ -8,6 +8,7 @@ import { FormEvent, useRef, useState } from "react";
 import App from "../../components/App";
 import BlackSheet from "../../components/blackSheet";
 import { ServerSideProps } from "../../components/OnServer";
+import { format } from "date-fns";
 const SelfBadge: AuthFC = ({ user }) => {
   const { email } = user;
   return (
@@ -101,7 +102,8 @@ const FriendList: React.FC = () => {
   );
 };
 
-const SearchSubMenu: React.FC = () => {
+const SearchSubMenu: React.FC<{ toViewUserState: State<UserEntity>; picking?: UserEntity }> = ({ toViewUserState, picking }) => {
+  const [toViewUser, setToViewUser] = toViewUserState;
   const [datas, setDatas] = useState([] as UserEntity[]);
   const search = async (msg: string) => {
     const res = await axios.get<UserEntity[]>(`/api/v1/premiumUser/?q=${msg}`);
@@ -111,11 +113,13 @@ const SearchSubMenu: React.FC = () => {
   return (
     <Stack className="subMenu" direction={"column"}>
       <SubMenuHeader title="検索" search={search} />
-      {datas.map((x, index) => (
-        <Stack className="singlePremiumUser" key={x.id} direction="row" alignItems={"center"} spacing={1}>
-          <Box className="thumb" width={30} height={30}></Box>
-          <span>{x.name}</span>
-        </Stack>
+      {datas.map((x) => (
+        <a onClick={() => setToViewUser(x)}>
+          <Stack className="singlePremiumUser" key={x.id} direction="row" alignItems={"center"} spacing={1}>
+            <Box className="thumb" width={30} height={30}></Box>
+            <span>{x.name}</span>
+          </Stack>
+        </a>
       ))}
     </Stack>
   );
@@ -137,11 +141,23 @@ const Soccer: React.FC = () => {
   return <Stack>soccer</Stack>;
 };
 
-const Search: React.FC = () => {
-  const [keyword, setKeyword] = useState("");
+const SearchContent: React.FC<{ user: UserEntity }> = ({ user }) => {
   return (
-    <Stack className="searchUser">
-      <SearchSubMenu />
+    <Stack>
+      <small>認定ユーザー</small>
+      <h3>{user.name}</h3>
+      <small>{format(new Date(user.createdAt), "yyyy年M月d日")}から利用</small>
+    </Stack>
+  );
+};
+
+const Search: React.FC = () => {
+  const toViewUserState = useState(null as UserEntity);
+  const [toViewUser, setToViewUser] = toViewUserState;
+  return (
+    <Stack className="searchUser" direction={"row"}>
+      <SearchSubMenu toViewUserState={toViewUserState} picking={toViewUser} />
+      {toViewUser && <SearchContent user={toViewUser} />}
     </Stack>
   );
 };

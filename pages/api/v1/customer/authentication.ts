@@ -13,6 +13,16 @@ export const verifyIdToken = async (token: string): Promise<DecodedIdToken> => {
     });
 };
 
+export const originAccessOnly: NextApiHandler = (req, res) => {
+  if (process.env.NODE_ENV !== "development") {
+    const hostname = new URL(req.headers.origin).hostname;
+    if (hostname !== process.env.NEXT_PUBLIC_DOMAIN) {
+      res.status(HttpStatusCode.FORBIDDEN).send("not allowed");
+      throw "origin-access-only api called from outside";
+    }
+  }
+};
+
 export const checkAuth: NextApiHandler = async (req, res) => {
   let signed = false;
   if (req.cookies?.__session === process.env.TEST_DEV_KEY) signed = true;

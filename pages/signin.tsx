@@ -1,12 +1,10 @@
-import { LoadingButton, LocalizationProvider, MobileDatePicker } from "@mui/lab";
-import DateAdapter from "@mui/lab/AdapterDateFns";
-import { Button, Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import Link from "next/link";
-import React, { createContext, FormEvent, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import App from "../components/App";
-import { Handler } from "../components/EventHandlers";
-import jaLocale from "date-fns/locale/ja";
 import axios from "axios";
+import SignupForm, { SignupFormEvent } from "../components/SignupForm";
 
 enum SigninStep {
   Agreement,
@@ -55,32 +53,11 @@ const Agreements: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) =
 /**基本情報タブ */
 const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepState }) => {
   const [step, setStep] = stepState;
-  const [birth, setBirth] = useState(null);
-  const [password, setPassword] = useState("");
-  const [cPassword, setCPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [passwordHasError, setPasswordHasError] = useState(false);
-  const [fulfilled, setFulfilled] = useState(false);
-  const [sei, setSei] = useState("");
-  const [mei, setMei] = useState("");
   const [isLoading, setIsLoaoding] = useState(false);
-  const checkPassword = () => {
-    if (password && password !== cPassword) setPasswordHasError(true);
-    else if (password.length < 6) setPasswordHasError(true);
-    else {
-      setPasswordHasError(false);
-    }
-  };
-  const checkFulfilled = () => {
-    if (!passwordHasError && birth && email && sei && mei && name) setFulfilled(true);
-    else setFulfilled(false);
-  };
-
-  const submit = async (e: FormEvent) => {
-    e.preventDefault();
+  const fulfillState = useState(false);
+  const [fulfilled, setFulfilled] = fulfillState;
+  const submit: SignupFormEvent = async ({ email, password, name, sei, mei, birth }) => {
     setIsLoaoding(true);
-    console.log("running");
     await axios
       .post("/api/v3/customer/new", { email, password, name, sei, mei, birth })
       .then(() => {
@@ -92,76 +69,9 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
       });
   };
 
-  useEffect(checkPassword, [password, cPassword]);
-  useEffect(checkFulfilled, [passwordHasError, birth, email, name, sei, mei]);
-  const dateAdapter = DateAdapter;
   return (
     <StepContent currentStep={step} step={SigninStep.BasicInfo}>
-      <form onSubmit={submit}>
-        <div className="basicForm">
-          <h4>ログイン情報</h4>
-          <TextField
-            value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
-            type={"email"}
-            size="small"
-            label="メールアドレス"
-            variant="outlined"
-          />
-          <Stack spacing={1}>
-            <small>パスワードは最低6文字以上必要です。</small>
-            <div style={{ display: "flex", gap: 20 }}>
-              <TextField
-                value={password}
-                onChange={(e) => {
-                  Handler.Input(e, setPassword);
-                }}
-                error={passwordHasError}
-                type={"password"}
-                size="small"
-                label="パスワード"
-                variant="outlined"
-                style={{ flex: 1 }}
-              />
-              <TextField
-                value={cPassword}
-                error={passwordHasError}
-                onChange={(e) => {
-                  Handler.Input(e, setCPassword);
-                }}
-                type={"password"}
-                size="small"
-                label="パスワード確認"
-                variant="outlined"
-                style={{ flex: 1 }}
-              />
-            </div>
-          </Stack>
-        </div>
-        <div className="basicForm">
-          <h4>個人情報</h4>
-          <div style={{ display: "flex", gap: 20 }}>
-            <TextField
-              onChange={(e) => Handler.Input(e, setName)}
-              value={name}
-              size="small"
-              label="ニックネーム"
-              variant="outlined"
-              style={{ flex: 1 }}
-            />
-            <TextField onChange={(e) => Handler.Input(e, setSei)} value={sei} size="small" label="姓" variant="outlined" style={{ flex: 1 }} />
-            <TextField onChange={(e) => Handler.Input(e, setMei)} value={mei} size="small" label="名" variant="outlined" style={{ flex: 1 }} />
-          </div>
-          <LocalizationProvider dateAdapter={DateAdapter} locale={jaLocale}>
-            <MobileDatePicker
-              label="生年月日"
-              inputFormat="yyyy年 M月 d日"
-              value={birth}
-              onChange={(date) => setBirth(date)}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-        </div>
+      <SignupForm onSubmit={submit} fulfillstate={fulfillState}>
         <div className="buttons">
           <Button variant="outlined" disabled={isLoading} onClick={() => setStep(step - 1)}>
             前へ
@@ -170,7 +80,7 @@ const BasicInfoSection: React.FC<{ stepState: State<SigninStep> }> = ({ stepStat
             完了
           </LoadingButton>
         </div>
-      </form>
+      </SignupForm>
     </StepContent>
   );
 };

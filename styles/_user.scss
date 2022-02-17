@@ -70,11 +70,15 @@
     .searchUser {
       height: 100%;
       .singlePremiumUser {
+        padding: 10px;
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.5);
+        }
         .thumb {
           background-color: #ccc;
           border-radius: 100%;
         }
-        padding: 10px;
       }
     }
   }
