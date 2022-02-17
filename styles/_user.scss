@@ -36,35 +36,39 @@
     display: flex;
     flex: 1;
     background-color: #fff9ea;
+    .subMenu {
+      background-color: #ffe391;
+      width: 340px;
+      height: 100%;
+      .header {
+        box-sizing: border-box;
+        width: 100%;
+        // background-color: rgba(255, 255, 255, 0.3);
+        display: flex;
+        h4.title {
+          background-color: #f8d56c;
+          padding: 5px 10px;
+        }
+        .inputArea {
+          margin: 0 10px;
+          padding: 10px 0;
+          input {
+            border-radius: 20px 0 0 20px;
+          }
+          button {
+            border-radius: 0 20px 20px 0;
+          }
+        }
+      }
+    }
     .feed {
       height: 100%;
     }
     .chat {
       height: 100%;
-      .friends {
-        background-color: #ffe391;
-        width: 340px;
-        height: 100%;
-        .header {
-          box-sizing: border-box;
-          width: 100%;
-          background-color: rgba(255, 255, 255, 0.3);
-          padding: 15px;
-          display: flex;
-          input {
-            all: unset;
-            font-size: 13px;
-            background-color: white;
-            border-radius: 20px;
-            width: 100%;
-            padding: 2.5px 10px;
-            &:focus {
-              outline: none;
-              box-shadow: 0 0 0 calc(1em * 1 / 16) #f0f1f3, 0 0 0 calc(calc(1em * 3 / 16) + calc(1em * 1 / 16)) #74c0fc;
-            }
-          }
-        }
-      }
+    }
+    .searchUser {
+      height: 100%;
     }
   }
   .subscribeSettingModal {
@@ -98,6 +102,9 @@
           font-size: 24px;
         }
       }
+      input {
+        width: 100%;
+      }
     }
   }
   @media only screen and (max-width: 480px) {
@@ -115,11 +122,25 @@
       }
     }
     .contextBody {
+      box-sizing: border-box;
+
       .chat {
         .friends {
           width: 100%;
         }
       }
     }
+  }
+}
+
+input.radiusInput {
+  all: unset;
+  font-size: 13px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 2.5px 10px;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 calc(1em * 1 / 16) #f0f1f3, 0 0 0 calc(calc(1em * 3 / 16) + calc(1em * 1 / 16)) #74c0fc;
   }
 }

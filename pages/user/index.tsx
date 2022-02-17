@@ -2,8 +2,9 @@ import { faFeed, faPaperPlane, faSearch, faSoccerBall, faStream, faTimeline, faT
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Button, Stack, Tab, Tabs, TextField } from "@mui/material";
+import axios from "axios";
 import { GetServerSideProps } from "next";
-import { useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import App from "../../components/App";
 import BlackSheet from "../../components/blackSheet";
 import { ServerSideProps } from "../../components/OnServer";
@@ -67,12 +68,53 @@ enum UserMenu {
   Search,
 }
 
-const FriendList: React.FC = () => {
+const SubMenuHeader: React.FC<{ title: string; search: (txt: string) => void }> = ({ title, search }) => {
+  const [value, setValue] = useState("");
+  const form = useRef<HTMLFormElement>();
+  const submit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    search(value);
+  };
   return (
-    <Stack className="friends" direction={"column"}>
-      <div className="header">
-        <input autoComplete={"off"} />
-      </div>
+    <form ref={form} onSubmit={submit}>
+      <Stack className="header" direction={"column"}>
+        <h4 className="title">{title}</h4>
+        <Stack className="inputArea" direction={"row"}>
+          <input value={value} onChange={(e) => setValue(e.target.value)} className="radiusInput" autoComplete={"off"} />
+          <button type="submit">
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
+        </Stack>
+      </Stack>
+    </form>
+  );
+};
+
+const FriendList: React.FC = () => {
+  const search = (msg: string) => {
+    console.log(msg);
+  };
+  return (
+    <Stack className="friends subMenu" direction={"column"}>
+      <SubMenuHeader title="メッセージ" search={search} />
+    </Stack>
+  );
+};
+
+const SearchSubMenu: React.FC = () => {
+  const [datas, setDatas] = useState([] as any[]);
+  const search = async (msg: string) => {
+    const res = await axios.get(`/api/v1/premiumUser/?q=${msg}`);
+    setDatas(res.data);
+    console.log(res.data);
+  };
+
+  return (
+    <Stack className="subMenu" direction={"column"}>
+      <SubMenuHeader title="検索" search={search} />
+      {datas.map((x, index) => (
+        <span key={index}>{x.name}</span>
+      ))}
     </Stack>
   );
 };
@@ -94,7 +136,12 @@ const Soccer: React.FC = () => {
 };
 
 const Search: React.FC = () => {
-  return <Stack>seach</Stack>;
+  const [keyword, setKeyword] = useState("");
+  return (
+    <Stack className="searchUser">
+      <SearchSubMenu />
+    </Stack>
+  );
 };
 
 const ContextBody: React.FC<LeftBarProps> = ({ user, menuState }) => {
