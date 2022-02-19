@@ -40,10 +40,10 @@ export class ServerInstance {
       .firestore()
       .collection("users")
       .withConverter({
-        toFirestore(post: UserEntity): DocumentData {
+        toFirestore(post: UserCol): DocumentData {
           return { createdAt: post.createdAt, isPremium: post.isPremium };
         },
-        fromFirestore(snapshot: QueryDocumentSnapshot): UserEntity {
+        fromFirestore(snapshot: QueryDocumentSnapshot): UserCol {
           const data = snapshot.data();
           console.log(data.createdAt.toString());
           new Date().toJSON();

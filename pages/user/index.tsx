@@ -9,6 +9,8 @@ import App from "../../components/App";
 import BlackSheet from "../../components/blackSheet";
 import { ServerSideProps } from "../../components/OnServer";
 import { format } from "date-fns";
+import Search from "../../components/user/search";
+import { SubMenuHeader, UserMenu } from "../../components/user";
 const SelfBadge: AuthFC = ({ user }) => {
   const { email } = user;
   return (
@@ -62,35 +64,6 @@ const LeftBar: React.FC<LeftBarProps> = ({ user, menuState }) => {
   );
 };
 
-enum UserMenu {
-  Chat,
-  Feed,
-  Soccer,
-  Search,
-}
-
-const SubMenuHeader: React.FC<{ title: string; search: (txt: string) => void }> = ({ title, search }) => {
-  const [value, setValue] = useState("");
-  const form = useRef<HTMLFormElement>();
-  const submit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    search(value);
-  };
-  return (
-    <form ref={form} onSubmit={submit}>
-      <Stack className="header" direction={"column"}>
-        <h4 className="title">{title}</h4>
-        <Stack className="inputArea" direction={"row"}>
-          <input value={value} onChange={(e) => setValue(e.target.value)} className="radiusInput" autoComplete={"off"} />
-          <button type="submit">
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
-        </Stack>
-      </Stack>
-    </form>
-  );
-};
-
 const FriendList: React.FC = () => {
   const search = (msg: string) => {
     console.log(msg);
@@ -98,29 +71,6 @@ const FriendList: React.FC = () => {
   return (
     <Stack className="friends subMenu" direction={"column"}>
       <SubMenuHeader title="メッセージ" search={search} />
-    </Stack>
-  );
-};
-
-const SearchSubMenu: React.FC<{ toViewUserState: State<UserEntity>; picking?: UserEntity }> = ({ toViewUserState, picking }) => {
-  const [toViewUser, setToViewUser] = toViewUserState;
-  const [datas, setDatas] = useState([] as UserEntity[]);
-  const search = async (msg: string) => {
-    const res = await axios.get<UserEntity[]>(`/api/v1/premiumUser/?q=${msg}`);
-    setDatas(res.data);
-  };
-
-  return (
-    <Stack className="subMenu" direction={"column"}>
-      <SubMenuHeader title="検索" search={search} />
-      {datas.map((x) => (
-        <a onClick={() => setToViewUser(x)}>
-          <Stack className="singlePremiumUser" key={x.id} direction="row" alignItems={"center"} spacing={1}>
-            <Box className="thumb" width={30} height={30}></Box>
-            <span>{x.name}</span>
-          </Stack>
-        </a>
-      ))}
     </Stack>
   );
 };
@@ -139,27 +89,6 @@ const Feed: React.FC = () => {
 
 const Soccer: React.FC = () => {
   return <Stack>soccer</Stack>;
-};
-
-const SearchContent: React.FC<{ user: UserEntity }> = ({ user }) => {
-  return (
-    <Stack>
-      <small>認定ユーザー</small>
-      <h3>{user.name}</h3>
-      <small>{format(new Date(user.createdAt), "yyyy年M月d日")}から利用</small>
-    </Stack>
-  );
-};
-
-const Search: React.FC = () => {
-  const toViewUserState = useState(null as UserEntity);
-  const [toViewUser, setToViewUser] = toViewUserState;
-  return (
-    <Stack className="searchUser" direction={"row"}>
-      <SearchSubMenu toViewUserState={toViewUserState} picking={toViewUser} />
-      {toViewUser && <SearchContent user={toViewUser} />}
-    </Stack>
-  );
 };
 
 const ContextBody: React.FC<LeftBarProps> = ({ user, menuState }) => {

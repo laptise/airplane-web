@@ -1,21 +1,34 @@
 /// <reference path="firebase/auth" />
 
-///ref
-interface UserEntity {
+interface BaseCollection {
   id: string;
+}
+
+interface RecordCollection extends BaseCollection {
   createdAt: Date;
+  updatedAt: Date;
+}
+
+///ref
+interface UserCol extends RecordCollection {
   isPremium: boolean;
   lcName: string;
   name: string;
   note: string;
   paymentId: string;
-  updatedAt: Date;
   sei: string;
   mei: string;
   birth: Date;
 }
 
-interface AuthUser extends UserEntity {
+interface PlanCol extends RecordCollection {
+  name: string;
+  note: string;
+  owner: string;
+  price: number;
+}
+
+interface AuthUser extends UserCol {
   uid: string;
   picture?: string;
   phone_number?: string;
@@ -25,6 +38,7 @@ interface AuthUser extends UserEntity {
 
 type State<T> = [T, React.Dispatch<React.SetStateAction<T>>];
 type AuthFC = React.FC<{ user: AuthUser }>;
+type UserInfoFC = React.FC<{ user: UserCol }>;
 
 interface AppProp {
   bodyId?: string;
