@@ -16,6 +16,7 @@ const handler: NextApiHandler = async (req, res) => {
     return;
   }
   try {
+    console.log("going");
     const user = await ServerInstance.firebase
       .auth()
       .createUser({
@@ -27,10 +28,13 @@ const handler: NextApiHandler = async (req, res) => {
         // photoURL: "http://www.example.com/12345678/photo.png",
         disabled: false,
       })
-      .catch(() => {
+      .catch((e) => {
+        console.error(e);
+
         throw "user create failed";
       });
-    const credential = await ServerInstance.stripe.customers.create({ email, description: user.uid }).catch(() => {
+    const credential = await ServerInstance.stripe.customers.create({ email, description: user.uid }).catch((e) => {
+      console.error(e);
       throw "stripe instance Failed";
     });
     const stripeId = credential.id;
@@ -60,6 +64,7 @@ const handler: NextApiHandler = async (req, res) => {
     res.status(200).send(hashed);
     return;
   } catch (msg) {
+    console.error(msg);
     res.status(HttpStatusCode.FORBIDDEN).send(msg);
     return;
   }

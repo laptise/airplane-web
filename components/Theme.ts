@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material";
 
+/**規定テーマ */
 const theme = createTheme({
   palette: {
     primary: {

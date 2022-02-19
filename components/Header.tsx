@@ -13,7 +13,12 @@ import Users from "../firebase/firestore/user";
 import { useRouter } from "next/router";
 import { tokenLogout } from "../firebase/auth";
 
-const UserMenu: React.FC<{ viewState: State<boolean>; onSubscribeOpen?: () => void }> = ({ viewState, onSubscribeOpen }) => {
+interface PopupMenuProps {
+  viewState: State<boolean>;
+  onSubscribeOpen?: () => void;
+}
+
+const UserMenu: React.FC<PopupMenuProps> = ({ viewState, onSubscribeOpen }) => {
   const [, setViewState] = viewState;
   const dispatch = useDispatch();
   const router = useRouter();
@@ -26,6 +31,12 @@ const UserMenu: React.FC<{ viewState: State<boolean>; onSubscribeOpen?: () => vo
 
   return (
     <ul className="userMenu">
+      <Link href={"/user"}>
+        <li>トップへ</li>
+      </Link>
+      <Link href={"/user/profile"}>
+        <li>プロフィール管理</li>
+      </Link>
       <li onClick={() => onSubscribeOpen?.()}>プラン管理</li>
       <li
         onClick={async () => {

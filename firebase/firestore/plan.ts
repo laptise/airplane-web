@@ -20,6 +20,7 @@ const converter: FirestoreConverter<PlanCol> = {
   },
 };
 
+/**プラン */
 export default class Plan implements PlanCol {
   name: string;
   note: string;
@@ -44,6 +45,8 @@ export default class Plan implements PlanCol {
   }
 
   static colRef = collection(getFirestore(), "plans").withConverter(converter);
+
+  /**販売者のIDから取得 */
   static async getFromUid(uid: string) {
     const q = query(this.colRef, where("owner", "==", uid));
     const snapshot = await getDocs(q);

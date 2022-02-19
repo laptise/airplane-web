@@ -1,5 +1,4 @@
 import { createTheme, ThemeProvider } from "@mui/material";
-import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React from "react";
 import Header from "./Header";

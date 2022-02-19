@@ -8,7 +8,9 @@ import { Utl } from "./utils";
 
 const isSSR = typeof window === "undefined";
 
+/**サーバーサイドインスタンス */
 export class ServerInstance {
+  /**ストライプインスタンス */
   static get stripe() {
     if (!isSSR) throw new Error("server only importable");
     return new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -16,6 +18,7 @@ export class ServerInstance {
     });
   }
 
+  /**ファイアベースインスタンス */
   static get firebase() {
     if (!isSSR) throw new Error("server only importable");
     if (admin.apps.length === 0) {
@@ -35,6 +38,7 @@ export class ServerInstance {
     }
   }
 
+  /**ユーザーコレクションレファレンス (Server side) */
   static get userColRef() {
     return this.firebase
       .firestore()
@@ -65,7 +69,9 @@ export class ServerInstance {
   }
 }
 
+/**サーバーサイドだけで呼べる処理 */
 export class OnServer {
+  /**トークンから利用者を取得 */
   static async getClientFromToken(ctx: GetServerSidePropsContext) {
     try {
       if (!isSSR) throw "is Not SSR";
@@ -96,12 +102,15 @@ export class OnServer {
   }
 }
 
+/**SSRチェックテンプレート */
 export class ServerSideProps {
+  /**訪問者だけが見れるページ(未ログイン時にだけ見れる) */
   static CustomerOnly: GetServerSideProps = async (ctx) => {
     const user = await OnServer.getClientFromToken(ctx);
     return user ? { props: {}, redirect: { destination: "/user/" } } : { props: {} };
   };
 
+  /**会員だけのコンテンツ (ログインユーザーのみ) */
   static UserOnly: GetServerSideProps = async (ctx) => {
     const user = await OnServer.getClientFromToken(ctx);
     return user ? { props: { user: Utl.JSONParse(user) } } : { props: {}, redirect: { permanent: true, destination: "/login/" } };

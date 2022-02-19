@@ -11,6 +11,8 @@ import { ServerSideProps } from "../../components/OnServer";
 import { format } from "date-fns";
 import Search from "../../components/user/search";
 import { SubMenuHeader, UserMenu } from "../../components/user";
+
+/**自分の情報バッジ */
 const SelfBadge: AuthFC = ({ user }) => {
   const { email } = user;
   return (
@@ -29,6 +31,7 @@ interface LeftBarProps {
   menuState: State<UserMenu>;
 }
 
+/**左側のメニューエリア */
 const LeftBar: React.FC<LeftBarProps> = ({ user, menuState }) => {
   const [menu, setMenu] = menuState;
   return (
@@ -91,6 +94,7 @@ const Soccer: React.FC = () => {
   return <Stack>soccer</Stack>;
 };
 
+/**画面のメインコンテンツのコンテナー */
 const ContextBody: React.FC<LeftBarProps> = ({ user, menuState }) => {
   const [currentMenu, setCurrentMenu] = menuState;
   return (
@@ -123,6 +127,7 @@ const SubscribeSettingModal: React.FC<{ viewState: State<boolean>; closeModal: (
   );
 };
 
+/**ダッシュボード画面 */
 const UserHome: AuthFC = ({ user }) => {
   const currentMenuState = useState(UserMenu.Chat);
   const [currentMenu, setCurrentMenu] = currentMenuState;

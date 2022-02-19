@@ -12,6 +12,7 @@ export interface SigninFormProps {
 
 export type SignupFormEvent = (formData: { email: string; password: string; name: string; sei: string; mei: string; birth: string }) => void;
 
+/**会員登録フォーム */
 export const SignupForm: React.FC<SigninFormProps> = ({ onSubmit, children, fulfillstate }) => {
   const [birth, setBirth] = useState(null);
   const [password, setPassword] = useState("");
