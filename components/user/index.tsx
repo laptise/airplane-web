@@ -45,8 +45,8 @@ export const SearchSubMenu: React.FC<{ toViewUserState: State<UserCol>; picking?
     <Stack className="subMenu" direction={"column"}>
       <SubMenuHeader title="検索" search={search} />
       {datas.map((x) => (
-        <a onClick={() => setToViewUser(x)}>
-          <Stack className="singlePremiumUser" key={x.id} direction="row" alignItems={"center"} spacing={1}>
+        <a key={x.id} onClick={() => setToViewUser(x)}>
+          <Stack className="singlePremiumUser" direction="row" alignItems={"center"} spacing={1}>
             <Box className="thumb" width={30} height={30}></Box>
             <span>{x.name}</span>
           </Stack>

@@ -48,6 +48,7 @@ export default class Users implements UserCol {
   static colRef = collection(getFirestore(), "users").withConverter(converter);
 
   static async getFromUid(uid: string) {
-    return (await getDoc(doc(this.colRef, uid))).data();
+    const snapshot = await getDoc(doc(this.colRef, uid));
+    return snapshot.data();
   }
 }

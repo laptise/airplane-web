@@ -1,4 +1,4 @@
-import { collection, getDoc, getFirestore, QueryDocumentSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, query, QueryDocumentSnapshot, where } from "firebase/firestore";
 import { setCommonRecordProps } from ".";
 import { FirestoreConverter } from "./user";
 
@@ -28,7 +28,6 @@ export default class Plan implements PlanCol {
   createdAt: Date;
   updatedAt: Date;
   id: string;
-  static colRef = collection(getFirestore(), "plans").withConverter(converter);
 
   constructor();
   constructor(snapshot: QueryDocumentSnapshot);
@@ -43,7 +42,11 @@ export default class Plan implements PlanCol {
         break;
     }
   }
-  //   static async getFromUid(uid: string) {
-  //     return await getDoc(doc(this.colRef, uid));
-  //   }
+
+  static colRef = collection(getFirestore(), "plans").withConverter(converter);
+  static async getFromUid(uid: string) {
+    const q = query(this.colRef, where("owner", "==", uid));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((x) => x.data());
+  }
 }
