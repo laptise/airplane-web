@@ -128,7 +128,6 @@ const UserHome: AuthFC = ({ user }) => {
   const [currentMenu, setCurrentMenu] = currentMenuState;
   const subscribeSettingModal = useState(false);
   const [subscribeModalViewState, setSubscribeModalViewState] = subscribeSettingModal;
-  console.log(currentMenu);
   return (
     <App headerClass="user" onSubscribeOpen={() => setSubscribeModalViewState(true)} userName={user?.name} bodyId="userDashboard" title="ホーム">
       <>
