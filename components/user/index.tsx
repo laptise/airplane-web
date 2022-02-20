@@ -2,14 +2,21 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Stack } from "@mui/material";
 import axios from "axios";
-import { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 
 export enum UserMenu {
   Chat,
   Feed,
   Soccer,
   Search,
+  PlanManagement,
 }
+
+export const SubMenu: React.FC = ({ children }) => (
+  <Stack className="subMenu" direction={"column"}>
+    {children}
+  </Stack>
+);
 
 export const SubMenuHeader: React.FC<{ title: string; search: (txt: string) => void }> = ({ title, search }) => {
   const [value, setValue] = useState("");
@@ -42,7 +49,7 @@ export const SearchSubMenu: React.FC<{ toViewUserState: State<UserCol>; picking?
   };
 
   return (
-    <Stack className="subMenu" direction={"column"}>
+    <SubMenu>
       <SubMenuHeader title="検索" search={search} />
       {datas.map((x) => (
         <a key={x.id} onClick={() => setToViewUser(x)}>
@@ -52,6 +59,6 @@ export const SearchSubMenu: React.FC<{ toViewUserState: State<UserCol>; picking?
           </Stack>
         </a>
       ))}
-    </Stack>
+    </SubMenu>
   );
 };

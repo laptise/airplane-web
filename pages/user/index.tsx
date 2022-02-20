@@ -11,6 +11,7 @@ import { ServerSideProps } from "../../components/OnServer";
 import { format } from "date-fns";
 import Search from "../../components/user/search";
 import { SubMenuHeader, UserMenu } from "../../components/user";
+import PlanManagement from "../../components/user/planManagement";
 
 /**自分の情報バッジ */
 const SelfBadge: AuthFC = ({ user }) => {
@@ -62,6 +63,14 @@ const LeftBar: React.FC<LeftBarProps> = ({ user, menuState }) => {
             検索
           </Stack>
         </a>
+        {user.isPremium && (
+          <a onClick={() => setMenu(UserMenu.PlanManagement)}>
+            <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+              <FontAwesomeIcon icon={faStream} size={"lg"} />
+              プラン管理
+            </Stack>
+          </a>
+        )}
       </Stack>
     </Stack>
   );
@@ -103,6 +112,7 @@ const ContextBody: React.FC<LeftBarProps> = ({ user, menuState }) => {
       {currentMenu === UserMenu.Feed && <Feed />}
       {currentMenu === UserMenu.Soccer && <Soccer />}
       {currentMenu === UserMenu.Search && <Search />}
+      {currentMenu === UserMenu.PlanManagement && <PlanManagement />}
     </Stack>
   );
 };
