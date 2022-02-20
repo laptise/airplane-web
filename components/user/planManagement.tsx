@@ -9,7 +9,7 @@ const PlanManagement = () => {
         search={(text) => {
           console.log(text);
         }}
-      ></SubMenuHeader>
+      />
     </SubMenu>
   );
 };
