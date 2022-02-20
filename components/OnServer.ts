@@ -85,6 +85,8 @@ export class OnServer {
           console.log(e);
           throw "Verify failed";
         });
+      console.log("real?");
+      console.log(userCrenetial);
       const { uid } = userCrenetial;
       if (!uid) throw "Verify failed";
       const user = await ServerInstance.userColRef
