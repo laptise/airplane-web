@@ -1,12 +1,12 @@
 import { Box, Button, TextField } from "@mui/material";
 import Link from "next/link";
 import KeyIcon from "@mui/icons-material/Key";
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import App from "../components/App";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { OnServer } from "../components/OnServer";
 
-export default function Home({ user }) {
+const Home: AuthFC = ({ user }) => {
   return (
     <App userName={user?.name} bodyId="home" title="ホーム">
       <>
@@ -16,7 +16,7 @@ export default function Home({ user }) {
       </>
     </App>
   );
-}
+};
 
 function AboutAirplane() {
   return (
@@ -106,3 +106,5 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // DashboardPageにpropsを渡して遷移する
   else return { props: {} };
 };
+
+export default Home;

@@ -18,10 +18,10 @@ interface SubmitContent {
   name: string;
   sei: string;
   mei: string;
-  birth: Date;
+  birth: Date | null;
 }
 
-const SigninContext = createContext<SubmitContent>(null);
+const SigninContext = createContext<SubmitContent | null>(null);
 const Step: React.FC<{ keyStep: SigninStep; currentStep: SigninStep }> = ({ children, keyStep, currentStep }) => (
   <li data-activated={currentStep == keyStep}>{children}</li>
 );
@@ -106,7 +106,7 @@ export default function Signin() {
   const stepState = useState(SigninStep.Agreement);
   const [step, setStep] = stepState;
   return (
-    <App userName={null} bodyId="signin" title="会員登録">
+    <App userName={""} bodyId="signin" title="会員登録">
       <SigninContext.Provider value={{ password: "", cPassword: "", name: "", sei: "", mei: "", birth: null }}>
         <ol className="steps">
           <Step currentStep={step} keyStep={SigninStep.Agreement}>

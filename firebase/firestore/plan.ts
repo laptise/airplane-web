@@ -22,19 +22,20 @@ const converter: FirestoreConverter<PlanCol> = {
 
 /**プラン */
 export default class Plan implements PlanCol {
-  name: string;
-  note: string;
-  owner: string;
-  price: number;
-  createdAt: Date;
-  updatedAt: Date;
-  id: string;
+  name!: string;
+  note!: string;
+  owner!: string;
+  price!: number;
+  createdAt!: Date;
+  updatedAt!: Date;
+  id!: string;
 
   constructor();
   constructor(snapshot: QueryDocumentSnapshot);
   constructor(snapshot?: QueryDocumentSnapshot) {
     switch (arguments.length) {
       case 1:
+        if (!snapshot) throw "there is no snapshot";
         const data = setCommonRecordProps(snapshot, this);
         this.name = data.name;
         this.note = data.note;

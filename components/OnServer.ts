@@ -13,7 +13,9 @@ export class ServerInstance {
   /**ストライプインスタンス */
   static get stripe() {
     if (!isSSR) throw new Error("server only importable");
-    return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    const StripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    if (!StripeSecretKey) throw "stripe secret key";
+    return new Stripe(StripeSecretKey, {
       apiVersion: "2020-08-27",
     });
   }
@@ -34,6 +36,7 @@ export class ServerInstance {
       const app = admin.initializeApp(option);
       return app;
     } else {
+      if (!admin.apps[0]) throw "there is no firebase instance";
       return admin.apps[0];
     }
   }
@@ -41,7 +44,7 @@ export class ServerInstance {
   /**ユーザーコレクションレファレンス (Server side) */
   static get userColRef() {
     return this.firebase
-      .firestore()
+      ?.firestore()
       .collection("users")
       .withConverter({
         toFirestore(post: UserCol): DocumentData {
@@ -79,7 +82,7 @@ export class OnServer {
       const session = cookies.__session?.toString?.() || "";
       if (!session) throw "empty cookie";
       const userCrenetial = await ServerInstance.firebase
-        .auth()
+        ?.auth()
         .verifySessionCookie(session, true)
         .catch((e) => {
           console.log(e);
@@ -89,14 +92,9 @@ export class OnServer {
       console.log(userCrenetial);
       const { uid } = userCrenetial;
       if (!uid) throw "Verify failed";
-      const user = await ServerInstance.userColRef
-        .doc(uid)
-        .get()
-        .then((doc) => doc.data())
-        .catch(() => {
-          throw "No User";
-        });
-      return { ...user, ...userCrenetial };
+      console.log("t");
+      console.log(userCrenetial);
+      return { ...userCrenetial };
     } catch (e) {
       console.log(e);
       return null;
@@ -122,7 +120,7 @@ export class ServerSideProps {
 export class Parser {
   static async getStripeUserFromToken(token: string) {
     const [uid, hash] = Buffer.from(token, "base64").toString().split(":");
-    const snapshot = await ServerInstance.firebase.firestore().collection("paymentKeyMaps").where("hash", "==", hash).where("uid", "==", uid).get();
+    const snapshot = await ServerInstance.firebase?.firestore().collection("paymentKeyMaps").where("hash", "==", hash).where("uid", "==", uid).get();
     const picked = snapshot.docs.map((x) => x.data());
     return picked[0];
   }

@@ -14,7 +14,7 @@ const NewUser: React.FC = () => {
     window.alert("成功");
   };
   return (
-    <App userName={null} title="認定ユーザーの登録" bodyId="newUser">
+    <App userName={""} title="認定ユーザーの登録" bodyId="newUser">
       <SignupForm onSubmit={addNewPremiumUser} fulfillstate={fulfillState}>
         <button type="submit" disabled={!fulfilled}>
           OK

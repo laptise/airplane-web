@@ -20,7 +20,7 @@ export const SignupForm: React.FC<SigninFormProps> = ({ onSubmit, children, fulf
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [passwordHasError, setPasswordHasError] = useState(false);
-  const [fulfilled, setFulfilled] = fulfillstate || useState(false);
+  const [fulfilled, setFulfilled] = fulfillstate || useState<boolean>(false);
   const [sei, setSei] = useState("");
   const [mei, setMei] = useState("");
   const checkPassword = () => {
@@ -38,6 +38,7 @@ export const SignupForm: React.FC<SigninFormProps> = ({ onSubmit, children, fulf
   useEffect(checkFulfilled, [passwordHasError, birth, email, name, sei, mei]);
   const submitProces = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!birth) throw "birthday needed";
     onSubmit({ email, sei, mei, birth, password, name });
   };
   return (

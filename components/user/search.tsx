@@ -54,7 +54,7 @@ const PremiumUserCandidate: UserInfoFC = ({ user }) => {
 };
 
 const Search: React.FC = () => {
-  const toViewUserState = useState(null as UserCol);
+  const toViewUserState = useState<UserCol | null>(null);
   const [toViewUser, setToViewUser] = toViewUserState;
   return (
     <Stack className="searchUser" direction={"row"}>

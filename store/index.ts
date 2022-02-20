@@ -22,7 +22,7 @@ const createStore = (() => {
     reducer: rootReducer,
     middleware: middlewareList,
     devTools: process.env.NODE_ENV !== "production",
-    preloadedState: preloadedState(),
+    preloadedState: preloadedState() as any,
   });
 })();
 

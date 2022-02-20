@@ -16,22 +16,23 @@ export const converter: FirestoreConverter<Users> = {
 };
 
 export default class Users implements UserCol {
-  isPremium: boolean;
-  lcName: string;
-  name: string;
-  note: string;
-  paymentId: string;
-  sei: string;
-  mei: string;
-  birth: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  id: string;
+  isPremium!: boolean;
+  lcName!: string;
+  name!: string;
+  note!: string;
+  paymentId!: string;
+  sei!: string;
+  mei!: string;
+  birth!: Date;
+  createdAt!: Date;
+  updatedAt!: Date;
+  id!: string;
   constructor();
   constructor(snapshot: QueryDocumentSnapshot);
   constructor(snapshot?: QueryDocumentSnapshot) {
     switch (arguments.length) {
       case 1:
+        if (!snapshot) throw "there is no snapshot";
         const data = setCommonRecordProps(snapshot, this);
         this.isPremium = data.isPremium;
         this.lcName = data.lcName;

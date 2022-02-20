@@ -5,8 +5,7 @@ import HttpStatusCode from "../../../../httpCodes";
 
 const handler: NextApiHandler = async (req, res) => {
   // Get the ID token passed and the CSRF token.
-  const idToken = req.body.idToken.toString();
-
+  const idToken = req.cookies.__session;
   //   const csrfToken = req.body.csrfToken.toString();
   // Guard against CSRF attacks.
   //   if (csrfToken !== req.cookies.csrfToken) {
@@ -14,28 +13,13 @@ const handler: NextApiHandler = async (req, res) => {
   //     return;
   //   }
   // Set session expiration to 5 days.
-  const expiresIn = 1000 * 60 * 60 * 24 * 5;
   const auth = ServerInstance.firebase.auth();
-  const uid = await auth.verifyIdToken(idToken).then((v) => v.uid);
+  const uid = await auth.verifySessionCookie(idToken, true).then((v) => v.uid);
   const user = await ServerInstance.userColRef.doc(uid).get();
   const userData = user.data();
   if (!userData) throw "no user data";
   await auth.setCustomUserClaims(uid, userData);
   // const claim = await auth.verifyIdToken(idToken);
-  const sessionCookie = await auth.createSessionCookie(idToken, { expiresIn }).catch((e) => {
-    res.status(HttpStatusCode.UNAUTHORIZED).send("UNAUTHORIZED REQUEST!");
-    throw "cookie generation failed";
-  });
-  // Set cookie policy for session cookie.
-  const options = {
-    maxAge: expiresIn,
-    httpOnly: true,
-    secure: process.env.NODE_ENV !== "development",
-    path: "/",
-    domain: process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_DOMAIN : "",
-    expiresIn: expiresIn / 1000,
-  };
-  setCookie({ res }, "__session", sessionCookie, options);
   res.status(200).json(user.data());
   return;
 };

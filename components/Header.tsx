@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { EffectCallback, useEffect, useState } from "react";
 import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuthState } from "../store/auth/selector";
@@ -22,11 +22,12 @@ const UserMenu: React.FC<PopupMenuProps> = ({ viewState, onSubscribeOpen }) => {
   const [, setViewState] = viewState;
   const dispatch = useDispatch();
   const router = useRouter();
-  const { logout, login } = authSlice.actions;
 
-  useEffect(() => {
+  const effect: EffectCallback = () => {};
+
+  useEffect((): (() => void) => {
     document.onclick = (e) => !(e.target as HTMLElement).closest("userMenu") && setViewState(false);
-    return () => (document.onclick = undefined);
+    return () => (document.onclick = () => {});
   }, []);
 
   return (
@@ -51,12 +52,9 @@ const UserMenu: React.FC<PopupMenuProps> = ({ viewState, onSubscribeOpen }) => {
 };
 
 const Header: React.FC<AppProp> = ({ title, userName, headerClass, onSubscribeOpen }) => {
-  const dispatch = useDispatch();
-  const { logout, login } = authSlice.actions;
   const { auth } = useAuthState();
   const menuViewState = useState(false);
   const [menuView, setMenuView] = menuViewState;
-  const router = useRouter();
   // useEffect(
   //   () =>
   //     getAuth().onAuthStateChanged(async (user) => {

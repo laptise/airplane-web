@@ -6,10 +6,12 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (_, action: PayloadAction<UserCol | null>) => ({
-      ...action.payload,
-    }),
-    logout: () => initialState,
+    login<UserCol>(_: any, action: PayloadAction<UserCol>) {
+      return action.payload;
+    },
+    logout() {
+      return initialState;
+    },
   },
 });
 
