@@ -86,12 +86,12 @@ const SelfBadge: AuthFC = ({ user }) => {
 };
 
 /**左側のメニューエリア */
-const LeftBar: React.FC<LeftBarProps> = ({ user, menuState }) => {
+export const LeftBar: React.FC<LeftBarProps> = ({ user, menuState }) => {
   const router = useRouter();
   const [menu, setMenu] = menuState;
   return (
     <Stack className="leftBar" spacing={2}>
-      <SelfBadge user={user} />
+      {user && <SelfBadge user={user} />}
       <Stack className="userMenu" direction={"column"} flex={1} justifyContent="space-around">
         <a onClick={() => router.push("/user")}>
           <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
@@ -119,6 +119,51 @@ const LeftBar: React.FC<LeftBarProps> = ({ user, menuState }) => {
         </a>
         {user.isPremium && (
           <a onClick={() => setMenu(UserMenu.PlanManagement)}>
+            <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+              <FontAwesomeIcon icon={faStream} size={"lg"} />
+              プラン管理
+            </Stack>
+          </a>
+        )}
+      </Stack>
+    </Stack>
+  );
+};
+
+export const FloatingMenu: AuthFC = ({ user }) => {
+  const currentMenuState = useState(UserMenu.Chat);
+  const [currentMenu, setCurrentMenu] = currentMenuState;
+  const router = useRouter();
+  return (
+    <Stack id="floatingMenu">
+      {user && <SelfBadge user={user} />}
+      <Stack className="userMenu" direction={"column"} flex={1} justifyContent="space-around">
+        <a onClick={() => router.push("/user")}>
+          <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+            <FontAwesomeIcon icon={faStream} size={"lg"} />
+            フィード
+          </Stack>
+        </a>
+        <a onClick={() => router.push("/user/message")}>
+          <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+            <FontAwesomeIcon icon={faPaperPlane} size={"lg"} />
+            メッセージ
+          </Stack>
+        </a>
+        <a onClick={() => router.push("/user/message")}>
+          <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+            <FontAwesomeIcon icon={faSoccerBall} size={"lg"} />
+            サッカー
+          </Stack>
+        </a>
+        <a onClick={() => router.push("/user/search")}>
+          <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
+            <FontAwesomeIcon icon={faSearch} size={"lg"} />
+            検索
+          </Stack>
+        </a>
+        {user?.isPremium && (
+          <a onClick={() => router.push("/user/message")}>
             <Stack className="menuItem" direction={"column"} alignItems="center" spacing={1}>
               <FontAwesomeIcon icon={faStream} size={"lg"} />
               プラン管理
@@ -184,10 +229,10 @@ const UserPage: React.FC<{ currentState: UserMenu }> = ({ children, currentState
   return (
     <App headerClass="user" onSubscribeOpen={() => setSubscribeModalViewState(true)} userName={auth?.name} bodyId="userDashboard" title="ホーム">
       <>
+        <FloatingMenu user={auth} />
         <SubscribeSettingModal closeModal={() => setSubscribeModalViewState(false)} viewState={subscribeSettingModal} />
         {auth && (
           <>
-            <LeftBar user={auth} menuState={currentMenuState} />
             <ContextBody user={auth} menuState={currentMenuState}>
               {children}
             </ContextBody>

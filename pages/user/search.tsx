@@ -6,10 +6,6 @@ import { useDispatch } from "react-redux";
 import { OnServer, ServerSideProps } from "../../components/OnServer";
 import UserPage, { SubMenuHeader, UserMenu } from "../../components/user";
 import Search from "../../components/user/search";
-import { Utl } from "../../components/utils";
-import { tokenCheck } from "../../firebase/auth";
-import { useAuthState } from "../../store/auth/selector";
-import authSlice from "../../store/auth/slice";
 
 /**ダッシュボード画面 */
 const UserHome: AuthFC = () => {

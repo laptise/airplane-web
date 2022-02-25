@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import { format } from "date-fns";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { SearchSubMenu } from ".";
 import Plan from "../../firebase/firestore/plan";
@@ -8,13 +9,15 @@ import CircleBox from "../circleBox";
 const PlanInfo: React.FC<{ plan: Plan }> = ({ plan }) => {
   const { id, name, price, note } = plan;
   return (
-    <Stack direction={"column"}>
-      <Stack direction={"row"} justifyContent="space-between">
-        <span>{name}</span>
-        <span>{price.toLocaleString()}</span>
+    <Link href={`/plan/${plan.id}`}>
+      <Stack className="singlePlan" direction={"column"}>
+        <Stack direction={"row"} justifyContent="space-between">
+          <span>{name}</span>
+          <span>{price.toLocaleString()}</span>
+        </Stack>
+        <span>{note}</span>
       </Stack>
-      <span>{note}</span>
-    </Stack>
+    </Link>
   );
 };
 
@@ -27,10 +30,8 @@ const OwningPlans: UserInfoFC = ({ user }) => {
   }, [user]);
   return (
     <Stack className="plans" direction={"column"} style={{ width: "100%" }} gap={1}>
-      {plans?.length > 0 && <span>プラン一覧</span>}
-      {plans.map((x) => (
-        <PlanInfo key={x.id} plan={x} />
-      ))}
+      <span>プラン一覧</span>
+      {plans?.length > 0 ? plans.map((x) => <PlanInfo key={x.id} plan={x} />) : <span>プランがありません。</span>}
     </Stack>
   );
 };

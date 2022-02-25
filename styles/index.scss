@@ -115,6 +115,7 @@ body {
     }
   }
   main {
+    position: relative;
     &#home {
       overflow: auto;
       section {
@@ -332,4 +333,38 @@ body {
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+#floatingMenu {
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding: 20px;
+  width: 120px;
+  background-color: $cyellow;
+  z-index: 1;
+  * {
+    color: $cdark;
+  }
+  .profile {
+    .iconBox {
+      width: 60px;
+      height: 60px;
+      background-color: #ccc;
+      border-radius: 100%;
+    }
+  }
+  .userMenu {
+    a {
+      text-decoration: none;
+    }
+    .menuItem {
+      filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+      cursor: pointer;
+      &:hover {
+        color: white;
+      }
+    }
+  }
 }
